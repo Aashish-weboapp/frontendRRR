@@ -1,0 +1,81 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.Entity-Form{
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  padding: 10px;
+  border-radius: 5px; /* 5px rounded corners */
+  background-color: aliceblue;
+  overflow:auto; 
+  
+}
+
+
+
+/* Add some padding inside the card container */
+.form-container {
+  padding: 2px 16px;
+}
+
+.form-header{
+  width:100%;
+}
+
+.icon{
+  cursor: pointer;
+  margin: 3px;;
+}
+
+.screen{
+    background:hsl(240deg 6% 87%);;
+    position:absolute;
+    top:0px;
+    right:0px;
+    bottom:0px;
+    left:0px;
+}
+
+button{
+  border-width:0;
+}
+
+
+
+
