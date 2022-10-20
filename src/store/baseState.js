@@ -13,7 +13,10 @@ export default {
       field_items:[],
       countries:[],
       countryData:{},
-      lists:[]
+      lists:[],
+      lookupData:{
+        fieldData:{}
+      }
     },
   
     //app module
@@ -25,6 +28,5 @@ export default {
       addr_data:{},
       users:[],
     },
-  
     
   }

@@ -3,12 +3,13 @@ import { connect } from 'react-redux';
 
 import { getMenus , getMenuLists , getColumns   } from '../../actions/system'
 
-import { Wrapper } from '../../components'
+import { PushNotify, Wrapper } from '../../components'
 import { Customer , Address , Country, Sidebar , List , Column , Form } from '../../views'
+import System from '../skelton/System';
 
 function Template(props) {
 
-    const [menu_info,setMenuItems] = useState({menu_items:[],menuOpen:true,menu_margin:250,menu_id:0,selected:''});
+    const [menu_info,setMenuItems] = useState({menu_items:[],menuOpen:true,menu_margin:250,menu:{menu_item:'Home'}});
 
     useEffect(()=>{
         props.getMenus('?ordering=sequence').then(() => {
@@ -24,9 +25,9 @@ function Template(props) {
       }
     },[props.list_items])
 
-    let  routeForm = (menu_name,menu_id) =>{
-        setMenuItems(menu_info => ({ ...menu_info, selected: menu_name , menu_id:menu_id}))
-        let list_filter = '?name='+menu_name 
+    let  routeForm = (menu) =>{
+        setMenuItems(menu_info => ({ ...menu_info, menu:menu}))
+        let list_filter = '?name='+menu.menu_item
         props.getMenuLists(list_filter).then(() => {})
       }
 
@@ -47,19 +48,17 @@ function Template(props) {
             <Sidebar items={props.menu_items} navigateMenu={routeForm} />
             <Wrapper class='mb-2' style={{marginLeft:menu_info.menu_margin,marginTop:30,marginRight:20}}>
                 <></>
-                {menu_info.selected==='Customers'?
-                    <Customer  menuToggle={menuToggle} menu_id={menu_info.menu_id}/>:
-                menu_info.selected==='Addresses'?
-                    <Address  menuToggle={menuToggle} menu_id={menu_info.menu_id} />:
-                menu_info.selected==='Countries'?
-                    <Country  menuToggle={menuToggle} menu_id={menu_info.menu_id} />:
-                menu_info.selected==='Lists'?
-                    <List  menuToggle={menuToggle} menu_id={menu_info.menu_id} />:
-                menu_info.selected==='Columns'?
-                    <Column  menuToggle={menuToggle} menu_id={menu_info.menu_id} />:
-                menu_info.selected==='Forms'?
-                    <Form  menuToggle={menuToggle} menu_id={menu_info.menu_id} />:    
-                <></>}    
+                {menu_info.menu.menu_item ==='Home'?
+                <></>:
+                menu_info.menu.menu_item ==='Customers'?
+                    <Customer  menuToggle={menuToggle} menu={menu_info.menu}/>:
+                menu_info.menu.menu_item==='Addresses'?
+                    <Address  menuToggle={menuToggle} menu={menu_info.menu} />:
+                menu_info.menu.menu_item ==='Countries'?
+                    <Country  menuToggle={menuToggle} menu_id={menu_info.menu.id} />:
+                menu_info.menu.menu_item ==='Lists'?
+                    <List  menuToggle={menuToggle} menu_id={menu_info.menu.id} />:
+                    <System menu={menu_info.menu} />}  
             </Wrapper>
       </Wrapper> 
     );

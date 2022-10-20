@@ -1,5 +1,7 @@
 export const USER__LOGIN = createActionType('USER__LOGIN');
 
+export const GET__LOOKUP = createActionType('GET__LOOKUP')
+
 export const GET__MENU = createActionType('GET__MENU');
 export const GET__FORMS = createActionType('GET__FORMS');
 export const GET__FIELDS = createActionType('GET__FIELDS');
@@ -15,6 +17,7 @@ export const POST__COUNTRY__DATA = createActionType('POST__COUNTRY__DATA');
 export const GET__CUSTOMERS = createActionType('GET__CUSTOMERS');
 export const GET__CUSTOMER__DATA = createActionType('GET__CUSTOMER__DATA'); 
 export const POST__CUSTOMER__DATA = createActionType('POST__CUSTOMER__DATA'); 
+export const PUT__CUSTOMER__DATA = createActionType('PUT__CUSTOMER__DATA'); 
 export const GET__CUSTOMER__ADDRESS = createActionType('GET__CUSTOMER__ADDRESS'); 
 
 export const GET__ADDRESSES = createActionType('GET__ADDRESSES');

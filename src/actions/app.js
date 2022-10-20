@@ -3,7 +3,7 @@ import axios from 'axios';
 import {
     createAction,
     GET__CUSTOMERS,GET__CUSTOMER__DATA,GET__CUSTOMER__ADDRESS,
-    POST__CUSTOMER__DATA,
+    POST__CUSTOMER__DATA,PUT__CUSTOMER__DATA,
     GET__USERS,
     GET__FORMS,
     GET__FIELDS,
@@ -27,6 +27,14 @@ export const createCustomer = (customer) => {
   return createAction({
     type: POST__CUSTOMER__DATA,
     action: () => axios.post(`${BASE_URL}/customers/`,customer,{ headers: HEADERS.AUTHENTIC() })
+  });
+}
+
+//update customer data
+export const updateCustomer = (customer,customerID) => {
+  return createAction({
+    type: PUT__CUSTOMER__DATA,
+    action: () => axios.put(`${BASE_URL}/customers/${customerID}/`,customer,{ headers: HEADERS.AUTHENTIC() })
   });
 }
 

@@ -31,7 +31,6 @@ function Country(props) {
               props.addresses.map((addr,inndx)=>{
                 if(addr.Country != null)
                 {
-                  console.log('default',addr.default)
                   if (addr.Country.id === cust.id && addr.default===true)
                   {
                     Country['address'] = addr
@@ -46,9 +45,7 @@ function Country(props) {
     let searchByName = (name) =>{
       async function CountryFetch(Country_filter){
       await props.getCountries(Country_filter).then(() => {
-        console.log('Countries',props.cont_list)
       })
-      console.log('Countries--',props.cont_list)
       }
       CountryFetch('?name='+name)
     }
@@ -75,7 +72,6 @@ function Country(props) {
     }
 
     let loadFormData = (CountryID) =>{
-      console.log('----',CountryID)
       props.getCountryAddress(CountryID).then(() => {})
       props.cont_list.map((cust,idx)=>{
         if(cust.id===CountryID)

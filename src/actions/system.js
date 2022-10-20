@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import {
     createAction,
+    GET__LOOKUP,
     GET__MENU,GET__MENU__LISTS,
     GET__LISTS,
     GET__COLUMNS,
@@ -14,6 +15,14 @@ import {
 } from './action';
 import { HEADERS } from '../config/appHeaders';
 import { BASE_URL } from '../config/api';
+
+//get all lookup list
+export const getLookups = (url,filters) => {
+  return createAction({
+    type: GET__LOOKUP,
+    action: async () => await axios.get(`${BASE_URL}/${url}/${filters}`,{ data: {}, headers: HEADERS.AUTHENTIC() })
+  });
+}
 
 //get all menus list
 export const getMenus = (filters) => {

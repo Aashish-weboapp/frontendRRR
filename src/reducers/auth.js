@@ -14,7 +14,7 @@ export default (state = baseState.authData, { payload, type, error }) => {
     case USER__LOGIN.SUCCESS:
       return {
         ...state,
-        menu_items: payload.data
+        loginDetails: payload.data
       };
 
     default:

@@ -29,7 +29,6 @@ function List(props) {
               props.addresses.map((addr,inndx)=>{
                 if(addr.List != null)
                 {
-                  console.log('default',addr.default)
                   if (addr.List.id === cust.id && addr.default===true)
                   {
                     List['address'] = addr
@@ -44,9 +43,7 @@ function List(props) {
     let searchByName = (name) =>{
       async function ListFetch(List_filter){
       await props.getLists(List_filter).then(() => {
-        console.log('Lists',props.list)
       })
-      console.log('Lists--',props.list)
       }
       ListFetch('?name='+name)
     }
@@ -73,7 +70,6 @@ function List(props) {
     }
 
     let loadFormData = (ListID) =>{
-      console.log('----',ListID)
       props.getListAddress(ListID).then(() => {})
       props.list.map((cust,idx)=>{
         if(cust.id===ListID)
@@ -82,6 +78,8 @@ function List(props) {
         }
       })
     }
+
+   
 
    
 

@@ -26,8 +26,6 @@ export default function configureStore() {
     enhancer
   );
 
-  console.log('store is as',store)
-
   /* if (module.hot) {
      /* Enables Redux Hot Reloading 
      module.hot.accept('../reducers/index', () => {

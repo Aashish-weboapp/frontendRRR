@@ -7,7 +7,6 @@ function Sidebar(props) {
     const [prevItem,setPrevItem] = useState('Home')
 
     let shuffleDropdown = (menuID,blockID) =>{
-        //document.getElementById(menuID).classList.toggle("active");
         var dropdownContent = document.getElementById(blockID);
         if (dropdownContent.style.display === "block") {
         dropdownContent.style.display = "none";
@@ -20,18 +19,18 @@ function Sidebar(props) {
         let result = [];
         if(arr.length > 0 ){
             result = arr.reduce((r, a) => {
-            r[a.application] = r[a.application] || [];
-            r[a.application].push(a);
+            r[a.menu_category] = r[a.menu_category] || [];
+            r[a.menu_category].push(a);
             return r;
             }, Object.create(null))};
         return result;
      };
 
-    let navigateMenu = (formName,id) =>{
+    let navigateMenu = (menu) =>{
         document.getElementById(prevItem).classList.remove('active')
-        document.getElementById(formName).classList.add('active')
-        setPrevItem(formName)
-        props.navigateMenu(formName,id)
+        document.getElementById(menu.menu_item).classList.add('active')
+        setPrevItem(menu.menu_item)
+        props.navigateMenu(menu)
     }
 
      let grouped_items = groupByMake(props.items)
@@ -44,7 +43,8 @@ function Sidebar(props) {
                 </a>
                 <div className="dropdown-container" id={key}>
                 {grouped_items[key].map((sub_item,indx)=>{
-                    return <a href="#" className='' id = {sub_item.form_name} onClick={() => {navigateMenu(sub_item.form_name,sub_item.id)}}>{sub_item.menu_item}</a>
+                    let menu_name = sub_item.list != null ? sub_item.list.label : ''
+                    return <a href="#" className='' key={indx} id = {menu_name} onClick={() => {navigateMenu(sub_item.list.id)}}>{menu_name}</a>
                 })}
                 </div>
             </li>  

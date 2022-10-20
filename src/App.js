@@ -13,7 +13,7 @@ function App(props) {
   return (  
       <>
         <Routes>
-          <Route path="/" element={<Navigate to="/views" />}></Route>
+          <Route path="/" element={<Navigate to="/login" />}></Route>
           <Route path="/login" element={<Login />} ></Route>
         </Routes>
         <Routes>

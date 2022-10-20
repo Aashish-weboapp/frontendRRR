@@ -12,7 +12,7 @@ import ListView from "../entities/ListView";
 function Address(props) {
 
     let AddressId=1;
-    const [Address,setAddresss] = useState({addr_list:[],cust_json:{'entity':'1'}});
+    const [address,setAddresss] = useState({addr_list:[],addr_json:{'entity':'1'}});
     const [formMode,setFormMode] = useState('list');
 
     useEffect(()=>{
@@ -20,20 +20,25 @@ function Address(props) {
       });
     },[])
 
-    let searchByName = (name) =>{
-      async function AddressFetch(Address_filter){
-      await props.getAddresss(Address_filter).then(() => {
-        console.log('Addresss',props.cust_list)
-      })
-      console.log('Addresss--',props.cust_list)
+    useEffect(()=>{
+      if((props.addresses) != undefined ) 
+      {
+        setAddresss(address => ({ ...address, addr_list: props.addresses}))
       }
-      AddressFetch('?name='+name)
+        
+    },[props.addresses])
+
+    let searchByName = (name) =>{
+      function addressFetch(address_filter){
+       props.getAddresses(address_filter).then(() => {})
+      }
+      addressFetch('?location__contains='+name)
     }
 
     let changeMode = (mode) =>{
       if(mode==='save')
       {
-        props.createAddress(Address.cust_json).then(() => {
+        props.createAddress(Address.addr_json).then(() => {
           setFormMode('view')
         })
       }else if(mode==='edit')
@@ -45,21 +50,16 @@ function Address(props) {
       }
     }
 
-
-    let addValue = (event,field) =>{
-      const { value } = event.target;
-      setAddresss(Address => ({ ...Address, cust_json :{...Address.cust_json , [field]:value} }))
-    }
-
-    let loadFormData = (AddressID) =>{
-      console.log('----',AddressID)
-      props.getAddressAddress(AddressID).then(() => {})
-      props.cust_list.map((cust,idx)=>{
-        if(cust.id===AddressID)
-        {
-          setAddresss(Address => ({ ...Address, cust_json: cust}))
-        }
-      })
+    let loadFormData = (addressID) =>{
+      let addr = address.addr_list.find(addr => addr.id === addressID);
+      if(addr != undefined)
+      {
+        //setLists(cust.other_address)
+        setAddresss(address => ({ ...address, addr_json: addr}))
+      }
+      else{
+        alert('No Matching Record Found')
+      }
     }
 
    
@@ -69,6 +69,7 @@ function Address(props) {
     <Wrapper>
       {formMode === 'list'?
          <ListView title='Addresses' 
+                   menu_id = {props.menu.id}
                    menuToggle={props.menuToggle}
                    searchByName={searchByName}
                    changeMode={changeMode}
@@ -77,8 +78,10 @@ function Address(props) {
                    rows={props.addresses}/>:
       formMode === 'add' || formMode === 'edit' || formMode === 'view'?
         <FormView recordID={AddressId}
+                  icon='fas fa-home'
+                  menu_id = {props.menu.id}
                   loadFormData={loadFormData}
-                  dataObj={Address.cust_json}
+                  dataObj={address.addr_json}
                   formMode={formMode}
                   changeMode={changeMode}
           />:
@@ -92,7 +95,6 @@ function Address(props) {
 const mapStateToProps = state => {
     return {
         addresses: state.appData.addresses,
-        cust_addr: state.appData.AddressAddresses,
         list_items: state.sysData.list_items,
         column_items:state.sysData.column_items
     };

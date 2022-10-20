@@ -1,23 +1,31 @@
-import React from "react";
-import { connect } from 'react-redux';
-
+import React, { useEffect } from "react";
 import  '../../styles/views/Login.css'
+
+import { connect } from 'react-redux';
+import { useNavigate  } from "react-router-dom";
 import { user_login } from '../../actions/auth'
 
-import { Wrapper , Card } from '../../components'
-
 function Login(props) {
+
+  const navigate = useNavigate();
 
       let handleSubmit = () => {
         let uname = document.getElementById('Uname').value;
         let pass = document.getElementById('Pass').value;
         let login_info={username:uname,password:pass}
         props.user_login(login_info).then(() => {
-          localStorage.setItem('token',)
         }, () => {
                 
         });
       }
+
+      useEffect(()=>{
+        if(props.loginDetails.status === 'success'){
+          localStorage.setItem('accesToken',props.loginDetails.token.access)
+          navigate('/views');
+        }
+
+      },[props.loginDetails])
 
   return (
     <>
@@ -34,7 +42,7 @@ function Login(props) {
               <br></br>  
               <input type="Password" name="Pass" id="Pass" placeholder="Password" />    
               <br></br><br></br>    
-              <button className={`text-capitalize btn btn-secondary btn-lg"`} type="button">Login</button>      
+              <button className={`text-capitalize btn btn-secondary btn-lg"`} type="button" onClick={handleSubmit}>Login</button>      
               <br></br>    
                 
           </form>     
@@ -47,7 +55,7 @@ function Login(props) {
 
 const mapStateToProps = state => {
   return {
-     
+     loginDetails : state.authData.loginDetails
   };
 };
 

@@ -1,3 +1,4 @@
+import { Dropdown } from '..'
 import  '../../styles/components/Field.css'
 
 function CustomButton(props) {
@@ -6,8 +7,15 @@ function CustomButton(props) {
     props.clickHanlder(value)
   }
 
+  let htmlButton = <button ref={props.ref} style={props.style} className='formButton' onClick={()=>clickHanlder(props.value)}>{props.btn}<i className={props.icon}></i></button>
+
+  let typeButton =  props.type === 'dropdown' ? <Dropdown button = {htmlButton} icon={props.icon} /> : htmlButton
+                        
+
   return (
-        <button style={props.style} className='formButton' onClick={()=>clickHanlder(props.value)}>{props.btn}<i className={props.icon}></i></button>
+        <>
+         {typeButton}
+        </>
   );
 }
 

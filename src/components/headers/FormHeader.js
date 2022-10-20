@@ -1,17 +1,30 @@
 import React, { useState } from "react";
-import CustomButton from "./../fields/CustomButton";
+import { Button } from '../../components'
 
 function FormHeader(props) {
 
   const [formID,setFormID] = useState(props.recordID)
       
-      let buttonStyle={
+      let iconStyle={
+        ...props.style,
         padding:2,
         marginLeft:3,
         marginRight:3,
         width:50,
-        color:'#33BEFF'
-      }  
+        color:'#0c7db1',
+        border: '1px solid black',
+        borderRadius: '3px'
+      } 
+      
+      let buttonStyle = {
+        padding:5,
+        color:'#0c7db1',
+        border: '1px solid black',
+        borderRadius: '3px',
+        float:'right',
+        fontWeight:'bold'
+      }
+        
       
   let changeID = (form_id) =>{
     setFormID(form_id)
@@ -23,18 +36,21 @@ function FormHeader(props) {
     <>
         {props.formMode==='add'||props.formMode==='edit'?
           <>
-            <CustomButton btn='' icon='fas fa-save' style={buttonStyle} value = '' clickHanlder = {()=>{props.changeMode('save')}}/>
-            <CustomButton btn='' icon='fas fa-window-minimize' style={buttonStyle} value = '' clickHanlder = {()=>{props.changeMode('list')}}/>
+            <Button btn='' icon='fas fa-check' style={iconStyle} value = '' clickHanlder = {()=>{props.saveRecord()}}/>
+            <Button btn='' icon='fas fa-close' style={iconStyle} value = '' clickHanlder = {()=>{props.changeMode('list')}}/>
           </>:
           <>
-            <CustomButton btn='' icon='fas fa-arrow-left' style={buttonStyle} value = '' clickHanlder = {()=>{props.changeMode('list')}}/>
-            <CustomButton btn='' icon='fas fa-backward' style={buttonStyle} value = '' clickHanlder = {()=>{changeID(formID-1)}}/>
-            <CustomButton btn='' icon='fas fa-forward' style={buttonStyle} value = '' clickHanlder = {()=>{changeID(formID+1)}}/>
-            <CustomButton btn='' icon='fas fa-pen' style={buttonStyle} value = '' clickHanlder = {()=>{props.changeMode('edit')}}/>
-            <CustomButton btn='' icon='fas fa-plus' style={buttonStyle} value = '' clickHanlder = {()=>{props.changeMode('add')}}/>
+            <Button btn='' icon='fas fa-arrow-left' style={iconStyle} value = '' clickHanlder = {()=>{props.changeMode('list')}}/>
+            <Button btn='' icon='fas fa-backward' style={iconStyle} value = '' clickHanlder = {()=>{changeID(formID-1)}}/>
+            <Button btn='' icon='fas fa-forward' style={iconStyle} value = '' clickHanlder = {()=>{changeID(formID+1)}}/>
+            <Button btn='' icon='fas fa-edit' style={iconStyle} value = '' clickHanlder = {()=>{props.changeMode('edit')}}/>
+            <Button btn='' icon='fas fa-plus' style={iconStyle} value = '' clickHanlder = {()=>{props.changeMode('add')}}/>
           </>}
-        <CustomButton btn='' icon='fas fa-bars' style={buttonStyle} value = '' clickHanlder = {()=>{}}/>
-        <CustomButton btn='' icon='fas fa-question' style={buttonStyle} value = '' clickHanlder = {()=>{}}/>
+        <Button btn='' icon='fas fa-gear' style={iconStyle} value = '' clickHanlder = {()=>{}}/>
+        <Button btn='' icon='fas fa-question' style={iconStyle} value = '' clickHanlder = {()=>{}}/>
+        {props.formMode ==='edit' ?
+          <Button btn='DEACTIVATE' style={buttonStyle} value='' clickHanlder={()=>{}} />:<></>}
+
     </>
   );
 }

@@ -7,7 +7,8 @@ import {
      GET__ADDRESSES,
      GET__USERS,
      GET__FIELDS,
-     GET__ADDRESS__DATA
+     GET__ADDRESS__DATA,
+     PUT__CUSTOMER__DATA
 } from '../actions/action';
 
 export default (state = baseState.appData, { payload, type, error }) => {
@@ -96,7 +97,24 @@ export default (state = baseState.appData, { payload, type, error }) => {
         return {
             ...state,
             customerData: payload.data
-        };    
+        }; 
+        
+    case PUT__CUSTOMER__DATA.REQUEST:
+        return {
+            ...state,
+        };
+      
+    case PUT__CUSTOMER__DATA.SUCCESS:
+         return {
+            ...state,
+            customerData: payload.data
+        };
+
+    case PUT__CUSTOMER__DATA.FAILURE:
+        return {
+            ...state,
+            customerData: payload.data
+        }; 
 
      case GET__CUSTOMER__ADDRESS.REQUEST:
         return {

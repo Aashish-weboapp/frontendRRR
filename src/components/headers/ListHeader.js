@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import { Button , Input } from "../../components";
+import { Button , Dropdown, Input } from "../../components";
 
 
 function ListHeader(props) {
 
-    const [filterValue,setFilterValue] = useState('')
-
     let searchStyle={
         height : 30,
-        width : 250,
-        float:'right'
+        width : 150,
+        float:'right',
+        border: '1px solid black',
       }
       
       let titleStyle={
@@ -20,19 +19,32 @@ function ListHeader(props) {
       
       let buttonStyle={
         padding:2,
-        marginLeft:2,
+        marginLeft:4,
         marginRight:3,
         width:30,
-        float:'right'
+        float:'right',
+        border: '1px solid black',
+        borderRadius: '3px',
+        color:'#0c7db1'
       } 
+
+    let borderStyle = {
+      color:'#0c7db1',
+      border: '1px solid black',
+      borderRadius: '3px'
+    }
       
       
     let hanldeChange = (event) =>{
-      setFilterValue(event.target.value)
+      props.searchControl(event.target.value)
     }
 
     let searchAction = () =>{
-      props.searchControl(filterValue)
+      //props.searchControl(filterValue)
+    }
+
+    let openImport = () =>{
+      props.openImport()
     }
 
     let addRecord = () =>{
@@ -41,12 +53,17 @@ function ListHeader(props) {
 
   return (
     <>
-        <i className={props.icon} onClick={props.iconHandler}></i>
+        <Button type='dropdown' btn='' icon='fas fa-search' style={buttonStyle} value = '' clickHanlder = {searchAction} />
+        <Button type='button' btn='' icon='fas fa-gear' style={buttonStyle} value = '' clickHanlder = {openImport} />
+        <Button type='dropdown' btn='' icon='fas fa-eye' style={buttonStyle} value = '' clickHanlder = {()=>{}} />
+        <Button type='button' btn='' icon='fas fa-plus' style={buttonStyle} value = '' clickHanlder = {addRecord} />
+        <Button btn='' icon={props.icon} style={borderStyle} value = '' clickHanlder = {()=>{props.iconHandler()}}/>
         <label style={titleStyle}>{props.listTitle}</label>
-        <Button btn='' icon='fas fa-eye' style={buttonStyle} value = '' clickHanlder = {()=>{}}/>
-        <Button btn='' icon='fas fa-plus' style={buttonStyle} value = '' clickHanlder = {addRecord}/>
-        <Button btn='' icon='fas fa-search' style={buttonStyle} value = '' clickHanlder = {searchAction}/>
-        <Input label={'search for '+props.listTitle} class='formField' style={searchStyle} onChange={hanldeChange} />
+        
+       
+        
+        
+        <Input label={'search for '+props.listTitle} class='formField' type='search' style={searchStyle} onChange={hanldeChange} />
     </>
   );
 }

@@ -1,5 +1,6 @@
 import baseState from '../store/baseState';
 import {
+     GET__LOOKUP,
      GET__MENU, GET__MENU__LISTS,
      GET__LISTS , GET__COLUMNS,
      GET__FORMS, GET__FIELDS, 
@@ -8,6 +9,23 @@ import {
 
 export default (state = baseState.sysData, { payload, type, error }) => {
   switch (type) {
+
+    case GET__LOOKUP.REQUEST:
+      return {
+        ...state,
+      };
+
+    case GET__LOOKUP.SUCCESS:
+      return {
+        ...state,
+        lookupData: payload.data
+      };
+
+    case GET__LOOKUP.FAILURE:
+        return {
+          ...state,
+          lookupData: payload
+        };
 
     case GET__MENU.REQUEST:
       return {
