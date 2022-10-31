@@ -149,6 +149,24 @@ input[type=file]::file-selector-button:hover {
   background: #0d45a5;
 }
 
+.fa-arrow-up-from-line{
+  opacity: var(--fa-secondary-opacity,1) !important;
+}
+
+.line {
+  display: inline-block;
+  width: 90%;
+  margin-left:10px;
+  height: 1px;
+  background-color: #987;
+  vertical-align: middle;
+}
+
+.section{
+  font-size: 20px;
+  font-weight: bold;
+}
+
 
 
 

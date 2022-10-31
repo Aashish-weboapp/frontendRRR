@@ -1,25 +1,21 @@
 import React, { useState } from "react";
 import Modal from 'react-bootstrap/Modal';
-import { PushNotify } from "..";
+import  '../../styles/components/Modal.css'
 
 function CustomModal(props) {
       
   return (
     <Modal
       {...props}
-      size="lg"
+      size="xl"
       aria-labelledby="contained-modal-title-vcenter"
       contentClassName="modal-height"
-      centered
-    >
-      <Modal.Header closeButton onClick={props.onHide}>
-      <Modal.Title id="contained-modal-title-vcenter">
-          {props.title}
-        </Modal.Title>
-      </Modal.Header>
+      centered>
+      
       <Modal.Body>
-      {props.modalheader}
+      
        {props.modalbody}
+       {props.modalHeader}
       </Modal.Body>
       <Modal.Footer>
       </Modal.Footer>

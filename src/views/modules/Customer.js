@@ -120,63 +120,34 @@ function Customer(props) {
     
     <Wrapper>
       {formMode === 'list'?
-         <ListView title={props.menu.menu_item}
+         <ListView title={props.list_info.label}
                    menuToggle={props.menuToggle}
                    searchByName={searchByName}
                    changeMode={changeMode}
                    loadFormData={loadFormData}
-                   headers={props.column_items}
+                   headers={props.list_info.columns}
                    rows={props.cust_list}/>:
       formMode === 'edit' || formMode === 'view'?
        <Wrapper>
-        <FormView recordID={customer.cust_id}
-                  icon={'fas fa-user '}
-                  menu_id = {props.menu.id}
-                  loadFormData={loadFormData}
-                  dataObj={customer.cust_json}
-                  formMode={formMode}
-                  changeMode={changeMode}
-                  saveRecord={saveRecord}
-                  updateRecord={updateRecord}/>
-        <SubListView title='Contacts' 
-                   changeMode={changeMode}
-                   tableMode={formMode}
-                   loadFormData={loadFormData}
-                   headers={addressFields}
-                   type={'Customer'}
-                   loadList={loadList}
-                   rows={contactRows}/>
-        <SubListView title='Billing Addresses' 
-                   changeMode={changeMode}
-                   tableMode={formMode}
-                   loadFormData={loadFormData}
-                   headers={addressFields}
-                   type={'Billing'}
-                   loadList={loadList}
-                   rows={billingRows}/>
-        <SubListView title='Shipping Addresses' 
-                   changeMode={changeMode}
-                   tableMode={formMode}
-                   loadFormData={loadFormData}
-                   headers={addressFields}
-                   type={'Shipping'}
-                   loadList={loadList}
-                   rows={shippingRows}/>
-        <SubListView title='Communication Channels' 
-                   icon='fas fa-phone'
-                   defaultLabel = {'Primary'}
-                   changeMode={changeMode}
-                   tableMode={formMode}
-                   loadFormData={loadFormData}
-                   headers={commFields}
-                   rows={[]}/>
+        {props.list_info.form !=null ?
+          <FormView recordID={customer.cust_id}
+                    icon={'fas fa-user '}
+                    form_id = {props.list_info.form.id}
+                    loadFormData={loadFormData}
+                    dataObj={customer.cust_json}
+                    formMode={formMode}
+                    changeMode={changeMode}
+                    saveRecord={saveRecord}
+                    updateRecord={updateRecord}/>:
+          <></>}
+          <></>
        </Wrapper>:
        formMode === 'add'?
        <Wrapper>
         {console.log('rendred')}
         <FormView recordID={customer.cust_id}
                   icon={'fas fa-user '}
-                  menu_id = {props.menu.id}
+                  form_id = {props.list_info.form.id}
                   loadFormData={loadFormData}
                   dataObj={{}}
                   formMode={formMode}

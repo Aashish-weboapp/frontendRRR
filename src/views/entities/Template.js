@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
-import { getMenus , getMenuLists , getColumns   } from '../../actions/system'
+import { getMenus  , getColumns   , getListData } from '../../actions/system'
 
 import { PushNotify, Wrapper } from '../../components'
 import { Customer , Address , Country, Sidebar , List , Column , Form } from '../../views'
 import System from '../skelton/System';
+import Configuration from '../drag&drop/Draggable'
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import Draggable from '../drag&drop/Draggable';
+import Section from '../drag&drop/Section';
+import Droppable from '../drag&drop/Droppable';
 
 function Template(props) {
 
-    const [menu_info,setMenuItems] = useState({menu_items:[],menuOpen:true,menu_margin:250,menu:{menu_item:'Home'}});
+    const [menu_info,setMenuItems] = useState({menu_items:[],menuOpen:true,menu_margin:250});
+    const [list_info,setListInfo] = useState({label:'Home',id:0})
 
     useEffect(()=>{
         props.getMenus('?ordering=sequence').then(() => {
@@ -18,17 +25,14 @@ function Template(props) {
     },[])
 
     useEffect(()=>{
-      if((props.list_items).length>0)  
-      {
-        let column_filter = '?list='+props.list_items[0].id+'&ordering=position'
-        props.getColumns(column_filter).then(() => {})
-      }
-    },[props.list_items])
+      setListInfo(props.list_data)        
+    },[props.list_data])
 
-    let  routeForm = (menu) =>{
-        setMenuItems(menu_info => ({ ...menu_info, menu:menu}))
-        let list_filter = '?name='+menu.menu_item
-        props.getMenuLists(list_filter).then(() => {})
+    let  routeForm = (list) =>{
+        props.getListData(list.id).then(() => {})
+        //calling it to maintain ordering
+        //let column_filter = '?list='+list.id+'&ordering=position'
+        //props.getColumns(column_filter).then(() => {})
       }
 
     let menuToggle = () =>{
@@ -48,17 +52,13 @@ function Template(props) {
             <Sidebar items={props.menu_items} navigateMenu={routeForm} />
             <Wrapper class='mb-2' style={{marginLeft:menu_info.menu_margin,marginTop:30,marginRight:20}}>
                 <></>
-                {menu_info.menu.menu_item ==='Home'?
+                {list_info.label==='Home'?
                 <></>:
-                menu_info.menu.menu_item ==='Customers'?
-                    <Customer  menuToggle={menuToggle} menu={menu_info.menu}/>:
-                menu_info.menu.menu_item==='Addresses'?
-                    <Address  menuToggle={menuToggle} menu={menu_info.menu} />:
-                menu_info.menu.menu_item ==='Countries'?
-                    <Country  menuToggle={menuToggle} menu_id={menu_info.menu.id} />:
-                menu_info.menu.menu_item ==='Lists'?
-                    <List  menuToggle={menuToggle} menu_id={menu_info.menu.id} />:
-                    <System menu={menu_info.menu} />}  
+                list_info.label ==='Customers'?
+                    <Customer  menuToggle={menuToggle} list_info={list_info}/>:
+                list_info.label ==='Configurations'?
+                    <DndProvider backend={HTML5Backend}><Droppable list_info={list_info}/></DndProvider>:
+                <System list_info={list_info} />}  
             </Wrapper>
       </Wrapper> 
     );
@@ -67,12 +67,12 @@ function Template(props) {
 const mapStateToProps = state => {
     return {
         menu_items: state.sysData.menu_items,
-        list_items: state.sysData.list_items,
+        list_data:state.sysData.list_data
     };
   };
   
 const mapDispatchToProps = {
-    getMenus , getMenuLists , getColumns
+    getMenus  , getColumns , getListData
 }
   
 export default connect(mapStateToProps,mapDispatchToProps)(Template);

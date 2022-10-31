@@ -4,9 +4,9 @@ import {
     createAction,
     GET__LOOKUP,
     GET__MENU,GET__MENU__LISTS,
-    GET__LISTS,
+    GET__LISTS,GET__LIST__DATA,
     GET__COLUMNS,
-    GET__FORMS,
+    GET__FORMS,GET__FORM__DATA,
     GET__FIELDS,
     GET__COUNTRIES,
     GET__COUNTRY__DATA,
@@ -40,6 +40,15 @@ export const getMenuLists = (filters) => {
   });
 }
 
+
+//get all columns list
+export const getListColumns = (list_id) => {
+  return createAction({
+    type: GET__COLUMNS,
+    action: () => axios.get(`${BASE_URL}/lists/${list_id}/columns/`,{ data: {}, headers: HEADERS.AUTHENTIC() }) 
+  });
+}
+
 //get all columns list
 export const getColumns = (filters) => {
   return createAction({
@@ -53,6 +62,14 @@ export const getForms = (filters) => {
   return createAction({
     type: GET__FORMS,
     action: async () => await axios.get(`${BASE_URL}/forms${filters}`,{ data: {}, headers: HEADERS.AUTHENTIC() })
+  });
+}
+
+//get all form list
+export const getFormData = (form_id) => {
+  return createAction({
+    type: GET__FORM__DATA,
+    action: async () => await axios.get(`${BASE_URL}/forms/${form_id}`,{ data: {}, headers: HEADERS.AUTHENTIC() })
   });
 }
 
@@ -93,5 +110,13 @@ export const getLists = (filters) => {
   return createAction({
     type: GET__LISTS,
     action: async () => await axios.get(`${BASE_URL}/lists${filters}`,{ data: {}, headers: HEADERS.AUTHENTIC() })
+  });
+}
+
+//get all lists data
+export const getListData = (list_id) => {
+  return createAction({
+    type: GET__LIST__DATA,
+    action: async () => await axios.get(`${BASE_URL}/lists/${list_id}`,{ data: {}, headers: HEADERS.AUTHENTIC() })
   });
 }

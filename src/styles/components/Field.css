@@ -1,11 +1,19 @@
 .fieldWrap{
     float: left;
-    width: 25%;
+    width: 50%;
     padding:5px 0px 5px 0px;
 }
 
+.fieldWrapModal{
+    float: left;
+    width: 75%;
+    padding:5px 0px 5px 0px;
+}
+
+
 .formLabel{
     font-weight: bold;
+    font-size: 15px;
     display: inline;
 }
 

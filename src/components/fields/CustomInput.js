@@ -25,26 +25,27 @@ function CustomInput(props) {
     }
   },[props.type])
 
-  let widthset = props.type === 'search' ? 30 : props.type === 'modalField' ? props.width : 50
+  let widthset = props.type === 'search' ? 30 : props.type === 'modalField' ? props.width : 100
 
   let inputValue = props.value === null ? undefined : props.value
 
   return (
     <>
         {props.type === 'dropdown'?
-        <select className={props.class} style={wdthStyle(50)}>
-          <option>Individual</option>
-          <option>Company</option>
+        <select className={props.class} style={wdthStyle(100)}>
+          {props.choices.map((choice,indx)=>{
+            return <option value={choice.id}>{choice.label}</option>
+          })}
         </select>:
         props.type === 'phone'?
         <>
           <input className={props.class} 
               placeholder={props.label}
-              style={wdthStyle(25)} 
+              style={wdthStyle(50)} 
               type = 'number'
               value={inputValue} 
               onChange={props.onChange}/>
-          <select style={nestedStyle(24)}>
+          <select style={nestedStyle(40)}>
             <option>Office</option>
             <option>Mobile</option>
           </select></>:

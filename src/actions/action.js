@@ -4,11 +4,13 @@ export const GET__LOOKUP = createActionType('GET__LOOKUP')
 
 export const GET__MENU = createActionType('GET__MENU');
 export const GET__FORMS = createActionType('GET__FORMS');
+export const GET__FORM__DATA = createActionType('GET__FORM__DATA');
 export const GET__FIELDS = createActionType('GET__FIELDS');
 export const GET__MENU__LISTS = createActionType('GET__MENU__LISTS');
 export const GET__COLUMNS = createActionType('GET__COLUMNS');
 
 export const GET__LISTS = createActionType('GET__LISTS');
+export const GET__LIST__DATA = createActionType('GET__LIST__DATA');
 
 export const GET__COUNTRIES = createActionType('GET__COUNTRIES');
 export const GET__COUNTRY__DATA = createActionType('GET__COUNTRY__DATA');

@@ -22,6 +22,7 @@ function Login(props) {
       useEffect(()=>{
         if(props.loginDetails.status === 'success'){
           localStorage.setItem('accesToken',props.loginDetails.token.access)
+          localStorage.setItem('configuration',JSON.stringify(props.loginDetails.configuration)) //[0].current_value
           navigate('/views');
         }
 

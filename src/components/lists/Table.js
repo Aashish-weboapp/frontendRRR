@@ -30,7 +30,7 @@ function Table(props) {
       props.headers.map((header, idx) => {
       let heading = header
       if(props.headerType==='Json'){
-        heading = ((header.column).charAt(0)).toUpperCase() + ((header.column).slice(1)).replace('_',' ')
+        heading = ((header.label).charAt(0)).toUpperCase() + ((header.label).slice(1)).replace('_',' ')
       }
       return (
           <th key={idx} className={"table-header"}>
@@ -63,13 +63,13 @@ function Table(props) {
               <input type='checkbox' style={{marginLeft:10}}/>
             </td>
             {props.headers.map((header, indx) => {
-              let sepIndex = (header.field).indexOf('.')
-              let dataMap = data[header.field]
+              let sepIndex = (header.column).indexOf('.')
+              let dataMap = data[header.column]
               if(sepIndex != -1)
                 {
-                  dataMap = data[(header.field).substring(0, sepIndex)]
+                  dataMap = data[(header.column).substring(0, sepIndex)]
                   if(dataMap != null)
-                    dataMap = dataMap[(header.field).substring(sepIndex+1, header.field.length)]
+                    dataMap = dataMap[(header.column).substring(sepIndex+1, header.column.length)]
                 }
               return <td key={indx}  onClick={()=>{viewRecord(data)}} >{dataMap}</td>
             })}
@@ -91,7 +91,7 @@ function Table(props) {
             </td>:<></>}
           {props.headers.map((header, indx) => {
             return <td key={indx} style={{paddingLeft:10}} onClick={()=>{}} >
-              <input type='text' value={rowValue[header.field]} onChange={(event)=>{changeHandler(event,header.field)}} /></td>
+              <input type='text' value={rowValue[header.column]} onChange={(event)=>{changeHandler(event,header.column)}} /></td>
           })}
           <i className='fas fa-check fa-2x' style={{paddingTop:3}} onClick={()=>{pushRow(rowValue)} } />
           <i className='fas fa-close fa-2x' style={{paddingLeft:10,paddingTop:3}} onClick={()=>{props.removeRow()} } />

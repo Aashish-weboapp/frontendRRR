@@ -1,13 +1,15 @@
 import React , {useEffect, useState} from 'react';
 import { connect, useSelector } from 'react-redux';
 
-import {  getForms,
+import {  getFormData,
           getFields } from '../../actions/system'
 
 import { Card , Wrapper , Input , Label, FormHeader, Table, ListHeader, TableHeader } from '../../components'
+import SubListView from './SubListView';
 
 function FormView(props) {
 
+    const [form_info,setFormInfo] = useState({})
     const [formData,setFormData] = useState({})
     const [updateData,setUpdateData] = useState({})
 
@@ -15,14 +17,18 @@ function FormView(props) {
 
     let titleStyle={
         fontWeight:'bold',
-        fontSize:20,
-        marginLeft:10
+        fontSize:33,
+        marginLeft:20
         
       }
 
     useEffect(()=>{
-        props.getForms('?menu='+props.menu_id).then(() => {})
+        props.getFormData(props.form_id).then(() => {})
     },[])
+
+    useEffect(()=>{
+        setFormInfo(props.form_info)
+    },[props.form_info])
 
     useEffect(()=>{
         if(Object.keys(props.dataObj).length !== 0)
@@ -33,10 +39,11 @@ function FormView(props) {
         }
     },[props.dataObj])
 
-    useEffect(()=>{
-        if((props.form_items).length > 0)
-            props.getFields('?ordering=position&form='+props.form_items[0].id).then(() => {})
-    },[props.form_items])
+    //only for ordering purpose
+    //useEffect(()=>{
+        //if(props.form_data !=undefined && props.form_data != null )
+            //props.getFields('?ordering=position&form='+props.form_data.id).then(() => {})
+    //},[props.form_data])
 
     let addChangeHandler = (event,name) =>{
         const { value } = event.target;
@@ -78,65 +85,86 @@ function FormView(props) {
     }
 
     let manageFieldData = (dataObj,field) =>{
-        let fieldKey = field.field
-        if(field.field===""||field.field===null)
-            fieldKey=field.name
-        let sepIndex = (field.field).indexOf('.')
-        let dataMap = dataObj[field.field]
+        let fieldKey = field.data
+        if(field.data===""||field.data===null)
+            fieldKey=field.label
+        let sepIndex = (field.data).indexOf('.')
+        let dataMap = dataObj[field.data]
         if(sepIndex !== -1)
         {
-            dataMap = dataObj[(field.field).substring(0, sepIndex)]
+            dataMap = dataObj[(field.data).substring(0, sepIndex)]
             if(dataMap != null)
-                dataMap = dataMap[(field.field).substring(sepIndex+1, field.field.length)]
+                dataMap = dataMap[(field.data).substring(sepIndex+1, field.data.length)]
         }
         return dataMap
     }
 
-    const groupByMake = (arr = []) => {
+    const groupByMake = (arr = [],key,key2) => {
         let result = [];
         if(arr.length > 0 ){
             result = arr.reduce((r, a) => {
-            r[a.panel] = r[a.panel] || [];
-            r[a.panel].push(a);
+            let divider = a[key]
+            if (key2 != '' && key2 != null){
+                divider = a[key][key2]
+            }
+            r[divider] = r[divider] || [];
+            r[divider].push(a);
             return r;
             }, Object.create(null))};
         return result;
      };
 
-    let grouped_items = groupByMake(props.field_items)
+     function GetSortOrder(prop) {    
+        return function(a, b) {    
+            if (a[prop] > b[prop]) {    
+                return 1;    
+            } else if (a[prop] < b[prop]) {    
+                return -1;    
+            }    
+            return 0;    
+        }    
+    }
+
+    let grouped_items = groupByMake(form_info.form_data,'section','section_title')
 
     let FormSkelton = Object.keys(grouped_items).map((fieldGrp,inx)=>{
+        let column_grouped = groupByMake(grouped_items[fieldGrp],'column','')
         return (
-        <React.Fragment key={inx}>
-            {grouped_items[fieldGrp].map((field,indx)=>{
-                let heading = ((field.name).charAt(0)).toUpperCase() + ((field.name).slice(1)).replace('_',' ')
-                let dataMap = manageFieldData(formData,field)
-                let fieldName = field.field
-                let fieldWdth = field.type === 'multi-line' ? '75%' : '25%'
-                if(fieldName =='' || fieldName == null)
-                    fieldName = field.name
-                if(fieldName=='entity' && dataMap == '1')
-                    dataMap='Individual'
-                if(fieldName=='entity' && dataMap == '2')
-                    dataMap='Company'
-                return (
-                    <React.Fragment key={indx}>
-                        <Label label={heading} class='col-md-3 formLabel' parentClass='fieldRtl'/>
-                        {props.formMode === 'view'?
-                            <Label label={dataMap} class='col-md-3 formValue' parentClass='' />:
-                        props.formMode === 'edit'?
-                            <div className='fieldWrap' style={{width:fieldWdth}}>
-                                <Input label={''} type={field.type} class='col-md-3 formInput'  value={dataMap} onChange={(event)=>{editChangeHandler(event,fieldName)}} />
-                            </div>:
-                            <div className='fieldWrap' style={{width:fieldWdth}}>
-                                <Input label={''} type={field.type} class='col-md-3 formInput' value={formData[fieldName]} onChange={(event)=>{addChangeHandler(event,fieldName)}} />
-                            </div> }
-                    </React.Fragment>)
-            })}
-            <div>
-                <hr style={{width:'100%'}}></hr>
+        <div className='row' key={inx}>
+            <div className='row'>
+                <label className='section'><i>{fieldGrp}</i><span class="line"></span></label>
             </div>
-        </React.Fragment>)
+            {Object.keys(column_grouped).map((columnGrp,indx)=>{
+                return(
+                <div className='col-6'>
+                    {column_grouped[columnGrp].map((columnField,inddx)=>{
+                    
+                      let heading = ((columnField.label).charAt(0)).toUpperCase() + ((columnField.label).slice(1)).replace('_',' ')
+                      let dataMap = manageFieldData(formData,columnField)
+                      let fieldName = columnField.data
+                      let fieldWdth = columnField.type === 'multi-line' ? '75%' : '25%'
+                      if(fieldName =='' || fieldName == null)
+                          fieldName = columnField.name
+                      if(fieldName=='entity' && dataMap == '1')
+                          dataMap='Individual'
+                      if(fieldName=='entity' && dataMap == '2')
+                          dataMap='Company'
+                      return (
+                          <React.Fragment key={indx}>
+                              <Label label={heading} class='col-md-3 formLabel' parentClass='fieldRtl'/>
+                              {props.formMode === 'view'?
+                                  <Label label={dataMap} class='col-md-3 formValue' parentClass='' />:
+                              props.formMode === 'edit'?
+                                  <div className='fieldWrap' style={{width:fieldWdth}}>
+                                      <Input label={''} type={columnField.type} class='col-md-3 formInput' choices={columnField.choices}  value={dataMap} onChange={(event)=>{editChangeHandler(event,fieldName)}} />
+                                  </div>:
+                                  <div className='fieldWrap' style={{width:fieldWdth}}>
+                                      <Input label={''} type={columnField.type} class='col-md-3 formInput' value={formData[fieldName]} onChange={(event)=>{addChangeHandler(event,fieldName)}} />
+                                  </div>}
+                          </React.Fragment>)   
+                    })}
+            </div>)})}
+        </div>)
     })
 
     let iconStage = formData.stage != undefined ?  formData.stage.stage:'no'
@@ -150,24 +178,33 @@ function FormView(props) {
                             recControl={(formID)=>{props.loadFormData(formID)}} saveRecord = {()=>props.saveRecord(formData)}/>}
 
             <Card top={20}>
-                <i className={props.icon+' fa-4x'} style={{color:iconColor[iconStage]}}></i>
+                <i className={props.icon+' fa-5x'} style={{color:iconColor[iconStage]}}></i>
                 <label style={titleStyle}>{formData['name']}</label><br></br><br></br>
                 {FormSkelton}
             </Card>
-            
+           {props.form_info.form_list != undefined?
+                props.form_info.form_list.map((formList,indx)=>{
+                    let columns = formList.list != null ? formList.list.columns : []
+                    let label = formList.list != null ? formList.list.label : ''
+                    return <SubListView title={label} changeMode={props.changeMode} tableMode={props.formMode}
+                                        loadFormData={props.loadFormData} headers={columns} type={'Customer'}
+                                        icon = {formList.icon}
+                                        loadList={()=>{}} rows={[]}/>
+                }):
+            <></>}
           </Wrapper>
     );
 }
 
 const mapStateToProps = state => {
     return {
-        form_items: state.sysData.form_items,
+        form_info: state.sysData.form_info,
         field_items:state.sysData.field_items
     };
   };
   
 const mapDispatchToProps = {
-    getForms,getFields
+    getFormData,getFields
    
 }
   

@@ -18,6 +18,11 @@ function SubListView(props) {
         setExportMode(!exportMode)
     }
 
+    let shuffleMode = () =>{
+        setAddMode(!addMode)
+        setExportMode(!exportMode)
+    }
+
     let removeRow = () =>{
         setAddMode(false)
     }
@@ -47,11 +52,15 @@ function SubListView(props) {
             <FormModal modalShow={addMode} 
                        title={props.title}
                        toggleMode={toggleAddMode}
+                       shuffleMode={shuffleMode}
                        saveRecord={saveRecord}
                        fields={props.headers}/>
             <ListModal modalShow={exportMode} 
                        title={props.title}
+                       icon={props.icon}
                        toggleMode={toggleExportMode}
+                       shuffleMode={shuffleMode}
+                       toggleAddMode={toggleAddMode}
                        rows={tableRows}
                        fields={props.headers}/>
         </Wrapper>

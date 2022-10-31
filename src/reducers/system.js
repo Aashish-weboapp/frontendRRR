@@ -4,7 +4,7 @@ import {
      GET__MENU, GET__MENU__LISTS,
      GET__LISTS , GET__COLUMNS,
      GET__FORMS, GET__FIELDS, 
-     GET__COUNTRIES , GET__COUNTRY__DATA , POST__COUNTRY__DATA
+     GET__COUNTRIES , GET__COUNTRY__DATA , POST__COUNTRY__DATA, GET__FORM__DATA, GET__LIST__DATA
 } from '../actions/action';
 
 export default (state = baseState.sysData, { payload, type, error }) => {
@@ -93,6 +93,40 @@ export default (state = baseState.sysData, { payload, type, error }) => {
         return {
           ...state,
           form_items: payload.data
+        };
+
+    case GET__FORM__DATA.REQUEST:
+      return {
+        ...state,
+      };
+
+    case GET__FORM__DATA.SUCCESS:
+      return {
+        ...state,
+        form_info: payload.data
+      };
+
+    case GET__FORM__DATA.FAILURE:
+        return {
+          ...state,
+          form_info: payload.data
+        };
+
+    case GET__LIST__DATA.REQUEST:
+      return {
+        ...state,
+      };
+
+    case GET__LIST__DATA.SUCCESS:
+      return {
+        ...state,
+        list_data: payload.data
+      };
+
+    case GET__LIST__DATA.FAILURE:
+        return {
+          ...state,
+          list_data: payload.data
         };
 
     case GET__FIELDS.REQUEST:

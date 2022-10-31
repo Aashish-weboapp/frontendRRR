@@ -5,10 +5,15 @@ function CustomIcon(props) {
 
   let clickHanlder = (value) => {
     props.clickHanlder(value)
-  }                     
+  }  
+  
+  let iconStyle = {
+    ...props.style,
+    cursor:'pointer'
+  }
 
   return (
-        <i className={props.icon} onClick={clickHanlder} style={props.style}></i>
+        <i className={props.icon} onClick={clickHanlder} style={iconStyle}></i>
   );
 }
 
