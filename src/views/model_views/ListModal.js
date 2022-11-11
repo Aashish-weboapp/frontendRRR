@@ -4,31 +4,20 @@ import { Card , Wrapper , Input , Label, FormHeader, Table, ListHeader, TableHea
 function ListModal(props) {
 
     let buttonStyle={
-        marginTop:10,
-        marginLeft:15,
-        marginRight:0,
+        padding:25,
         width:35,
         float:'right',
         color: 'rgb(12, 125, 177)'
-      }  
+    }   
 
-      let buttonStyle2={
-        marginTop:10,
-        marginLeft:1100,
-        marginRight:0,
-        width:30,
-        float:'right',
-        color: 'rgb(12, 125, 177)'
-      }  
-
-    let ModalHeader = <Wrapper>
+    let ModalHeader = <Wrapper style={{width:'100%'}}>
                         <i className={props.icon + ' fa-2x'} style={{color:'green'}}  />
                         <label style={{marginLeft:10,fontSize:20,fontWeight:'bold'}} >{(props.title).toUpperCase()}</label>
                         <Icon icon='fad fa-arrow-down-to-line fa-xl' style={buttonStyle} clickHanlder = {()=>{props.toggleMode()}}/>
                         <Icon icon='fas fa-gear fa-xl' style={buttonStyle} clickHanlder = {()=>{props.toggleExportMode()}}/>
                         <Icon icon='fas fa-eye fa-xl' style={buttonStyle} clickHanlder = {()=>{props.toggleExportMode()}}/>
                         <Icon icon='fas fa-plus fa-xl' style={buttonStyle} clickHanlder = {()=>{props.shuffleMode()}}/>
-                        <Icon icon='fas fa-search fa-xl' style={buttonStyle2} clickHanlder = {()=>{props.toggleExportMode()}}/>
+                        <Icon icon='fas fa-search fa-xl' style={buttonStyle} clickHanlder = {()=>{props.toggleExportMode()}}/>
                     </Wrapper>
 
     let FormSkelton = <React.Fragment>

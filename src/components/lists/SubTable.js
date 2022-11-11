@@ -69,13 +69,18 @@ function SubTable(props) {
               </td>
               :<></>}
             {props.headers.map((header, indx) => {
-              let sepIndex = (header.field).indexOf('.')
-              let dataMap = data[header.field]
+              let headerField = header.column
+              if((header.field) != null & (header.field) != '')
+              {
+                headerField = header.field
+              }
+              let sepIndex = (headerField).indexOf('.')
+              let dataMap = data[headerField]
               if(sepIndex != -1)
                 {
-                  dataMap = data[(header.field).substring(0, sepIndex)]
+                  dataMap = data[(headerField).substring(0, sepIndex)]
                   if(dataMap != null)
-                    dataMap = dataMap[(header.field).substring(sepIndex+1, header.field.length)]
+                    dataMap = dataMap[(headerField).substring(sepIndex+1, headerField.length)]
                 }
               return <td key={indx}  onClick={()=>{viewRecord(data)}} >{dataMap}</td>
             })}

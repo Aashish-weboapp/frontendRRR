@@ -10,7 +10,6 @@ import {  getCustomers,
 import { Card , Wrapper , Input , Label, FormHeader, Table, ListHeader, TableHeader, Modal, Dropdown } from '../../components'
 import FormView from "../entities/FormView";
 import ListView from "../entities/ListView";
-import SubListView from "../entities/SubListView";
 
 
 
@@ -19,10 +18,6 @@ function Customer(props) {
     const [customer,setCustomers] = useState({cust_list:[],cust_id:null,cust_json:{'entity':'1'}});
     const [lists,setLists] = useState([])
     const [formMode,setFormMode] = useState('list');
-    const addressFields = [{'field':'company_name','column':'Person'},{'field':'address1','column':'Location'},{'field':'city','column':'City'},
-                           {'field':'postal_code','column':'Zip Code'},{'field':'website','column':'Website'}]
-    const commFields = [{'field':'company_name','column':'Channel'},{'field':'company_name','column':'Type'},
-                        {'field':'company_name','column':'Value'},{'field':'company_name','column':'Routing'},{'field':'company_name','column':'Comment'}]
 
     useEffect(()=>{
       props.getCustomers('/').then(() => {})
@@ -125,66 +120,40 @@ function Customer(props) {
                    searchByName={searchByName}
                    changeMode={changeMode}
                    loadFormData={loadFormData}
+                   data_source={props.list_info.data_source}
                    headers={props.list_info.columns}
                    rows={props.cust_list}/>:
       formMode === 'edit' || formMode === 'view'?
        <Wrapper>
         {props.list_info.form !=null ?
           <FormView recordID={customer.cust_id}
-                    icon={'fas fa-user '}
+                    icon={props.icon}
                     form_id = {props.list_info.form.id}
                     loadFormData={loadFormData}
                     dataObj={customer.cust_json}
                     formMode={formMode}
                     changeMode={changeMode}
                     saveRecord={saveRecord}
+                    loadList={loadList}
+                    lists={lists}
                     updateRecord={updateRecord}/>:
           <></>}
           <></>
        </Wrapper>:
        formMode === 'add'?
        <Wrapper>
-        {console.log('rendred')}
-        <FormView recordID={customer.cust_id}
-                  icon={'fas fa-user '}
-                  form_id = {props.list_info.form.id}
-                  loadFormData={loadFormData}
-                  dataObj={{}}
-                  formMode={formMode}
-                  changeMode={changeMode}
-                  saveRecord={saveRecord}/>
-        <SubListView title='Contacts' 
-                   changeMode={changeMode}
-                   tableMode={formMode}
-                   loadFormData={loadFormData}
-                   headers={addressFields}
-                   type={'Customer'}
-                   loadList={loadList}
-                   rows={[]}/>
-        <SubListView title='Billing Addresses' 
-                   changeMode={changeMode}
-                   tableMode={formMode}
-                   loadFormData={loadFormData}
-                   headers={addressFields}
-                   type={'Billing'}
-                   loadList={loadList}
-                   rows={[]}/>
-        <SubListView title='Shipping Addresses' 
-                   changeMode={changeMode}
-                   tableMode={formMode}
-                   loadFormData={loadFormData}
-                   type={'Shipping'}
-                   loadList={loadList}
-                   headers={addressFields}
-                   rows={[]}/>
-        <SubListView title='Other Communication Channels' 
-                   icon='fas fa-phone'
-                   defaultLabel = {'Primary'}
-                   changeMode={changeMode}
-                   tableMode={formMode}
-                   loadFormData={loadFormData}
-                   headers={commFields}
-                   rows={[]}/>
+         <FormView recordID={customer.cust_id}
+                    icon={props.icon}
+                    form_id = {props.list_info.form.id}
+                    loadFormData={loadFormData}
+                    dataObj={{}}
+                    formMode={formMode}
+                    changeMode={changeMode}
+                    saveRecord={saveRecord}
+                    loadList={loadList}
+                    lists={[]}
+                    updateRecord={updateRecord}/>
+          <></>
        </Wrapper>:
 
         <></>}

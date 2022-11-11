@@ -8,11 +8,29 @@ import {
      GET__USERS,
      GET__FIELDS,
      GET__ADDRESS__DATA,
-     PUT__CUSTOMER__DATA
+     PUT__CUSTOMER__DATA,
+     GET__LIST__ROWS
 } from '../actions/action';
 
 export default (state = baseState.appData, { payload, type, error }) => {
   switch (type) {
+
+    case GET__LIST__ROWS.REQUEST:
+        return {
+            ...state,
+        };
+      
+    case GET__LIST__ROWS.SUCCESS:
+         return {
+            ...state,
+            listRows: payload.data
+        };
+      
+    case GET__LIST__ROWS.FAILURE:
+        return {
+            ...state,
+            listRows: []
+        };
 
     case GET__CUSTOMERS.REQUEST:
         return {

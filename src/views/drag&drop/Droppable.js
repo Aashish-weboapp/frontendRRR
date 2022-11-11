@@ -1,7 +1,7 @@
 
 import React, { useState, useCallback, useEffect } from 'react'
 import { FormItem } from './FormItem'
-import {  getFormData,
+import {  getFormInfo,
     getFields } from '../../actions/system'
 import { connect } from 'react-redux'
 import { Button } from 'react-bootstrap'
@@ -20,13 +20,7 @@ const Droppable = (props) => {
 
     const [fields, setFields] = useState([])
 
-   
-
-    useEffect(()=>{
-        props.getFormData(1).then(() => {}) //props.list_info.form.id
-    },[])
-
-    let indexedFieldList = (fields) => { 
+    let indexedFieldList = (fields) => {
         let new_field_list = []
         let grouped_items = groupByMake(fields,'section','section_title')
         Object.keys(grouped_items).map((fieldGrp,inx)=>{
@@ -41,13 +35,15 @@ const Droppable = (props) => {
     }
 
     useEffect(()=>{
-        if(props.form_info.form_data!=undefined)
-            indexedFieldList(props.form_info.form_data)
+        if((props.form_info).length > 0)
+        {
+            if(props.form_info[0].form_data!=undefined)
+                indexedFieldList(props.form_info[0].form_data)
+        }
     },[props.form_info])
 
     const movePetListItem = useCallback(
         (dragIndex, hoverIndex) => {
-            console.log('pet list items are'+dragIndex+'hover'+hoverIndex)
             const dragItem = fields[dragIndex]
             const hoverItem = fields[hoverIndex]
             // Swap places of dragItem and hoverItem in the fields array
@@ -106,26 +102,32 @@ const Droppable = (props) => {
         </div>)
     })
 
-    let listSkelton =  props.form_info.form_list != undefined?
-        props.form_info.form_list.map((formList,indx)=>{
-            let columns = formList.list != null ? formList.list.columns : []
-            let label = formList.list != null ? formList.list.label : ''
-            return <div className='row' key={indx} style={borderStyle}>
-                        <ListLayout title={label} changeMode={props.changeMode} tableMode={props.formMode}
-                                    loadFormData={props.loadFormData} headers={columns} type={'Customer'}
-                                    icon = {formList.icon}
-                                    loadList={()=>{}} rows={[]}/>
-                    </div>
-        }):
-    <></>
+    let listSkelton =  (props.form_info).length > 0 ?
+        props.form_info[0].form_list != undefined?
+            props.form_info[0].form_list.map((formList,indx)=>{
+                let columns = formList.list != null ? formList.list.columns : []
+                let label = formList.list != null ? formList.list.label : ''
+                return <div className='row' key={indx} style={borderStyle}>
+                            <ListLayout title={label} changeMode={props.changeMode} tableMode={props.formMode}
+                                        loadFormData={props.loadFormData} headers={columns} type={'Customer'}
+                                        icon = {formList.icon}
+                                        loadList={()=>{}} rows={[]}/>
+                        </div>
+            }):
+    <></>:<></>
+
+    let loadLayout = (event) =>{
+        props.getFormInfo('?form='+event.target.value).then(() => {}) //props.list_info.form.id
+    }
 
 
     return (
         <React.Fragment>
             <label>Select Layout</label>
-            <select style={{margin:'10px'}}>
-                {props.menu_items.map((menuItem)=>{
-                    let label = menuItem.list !=  null ? <option>{menuItem.list.label}</option>  : <></>
+            <select style={{margin:'10px'}} onChange={loadLayout}>
+                <option disabled selected>Choose Form</option>
+                {props.menu_items.map((menuItem,inx)=>{
+                    let label = menuItem.list !=  null ? menuItem.list.form!= null ? <option key={inx} >{menuItem.list.label}</option>  : <></> : <></>
                     return <>{label}</>
                 })}
             </select>
@@ -146,7 +148,7 @@ const mapStateToProps = state => {
   };
   
 const mapDispatchToProps = {
-    getFormData,getFields
+    getFormInfo,getFields
    
 }
   

@@ -1,24 +1,32 @@
 import React, { useState } from "react";
 import  '../../styles/components/Modal.css'
 
-function Modal(props) {
+function CustomModal(props) {
 
   let modalDisplay = props.display == true ? 'block': 'none'
 
   let style={
     ...props.style
   }
+
+  let closeStyle = {
+    width:'50px',
+    background:'transparent'
+  }
       
   return (
-    <div id="myModal" class="modal" style={{display:modalDisplay}}>
-        <div class="modal-content" style={style}>
-            <div class="modal-header">
+    <div id="myModal" className="modal" style={{display:modalDisplay}}>
+        <div className="modal-content" style={style}>
+            <div className="modal-header">
               {props.modalheader}
+              {props.closeBtn === true ? 
+                <button style={closeStyle} onClick={props.onHide}><i className='fa fa-close fa-2x'></i></button>:
+                <></>}
             </div>
-            <div class="modal-body">
+            <div className="modal-body">
               {props.modalbody}
             </div>
-            <div class="modal-footer">
+            <div className="modal-footer">
            
             </div>
         </div>
@@ -26,4 +34,4 @@ function Modal(props) {
   );
 }
 
-export default Modal;
+export default CustomModal;

@@ -5,10 +5,11 @@ import { Button } from '..';
 function CustomDropdown(props) {
 
   let buttonStyle={
-    padding:2,
+    padding:4,
     marginLeft:4,
     marginRight:3,
-    width:30,
+    marginBottom:4,
+    width:40,
     float:'right',
     border: '1px solid black',
     borderRadius: '3px',
@@ -28,14 +29,15 @@ function CustomDropdown(props) {
 
   return (
     <Dropdown>
-      <Dropdown.Toggle as={CustomToggle} id="dropdown-basic">
+      <Dropdown.Toggle as={CustomToggle} id="dropdown-basic" >
         
       </Dropdown.Toggle>
 
-      <Dropdown.Menu>
-        <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+      <Dropdown.Menu drop={'start'} align='end'>
+        {props.options.map((option,indx)=>{
+          return <Dropdown.Item href={"#/"+option}>{option}</Dropdown.Item>
+        })}
+        
       </Dropdown.Menu>
     </Dropdown>
   );

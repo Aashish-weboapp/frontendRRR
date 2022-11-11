@@ -10,6 +10,7 @@ function Sidebar(props) {
         var dropdownContent = document.getElementById(blockID);
         if (dropdownContent.style.display === "block") {
         dropdownContent.style.display = "none";
+        //change icon here
         } else {
         dropdownContent.style.display = "block";
         }
@@ -54,7 +55,7 @@ function Sidebar(props) {
         }
      })
 
-     let menuSelectedColor = '#000000'
+     let menuSelectedColor = ''
 
      JSON.parse(localStorage.getItem('configuration')).map((config)=>{
         if(config.configuration === 'Menu Selected Color')
@@ -63,13 +64,17 @@ function Sidebar(props) {
         }
      })
 
+    let activeStyle = {
+        background:menuSelectedColor
+    }
+
      let menu_items = Object.keys(grouped_items).map(key => {
         return(
             <li key={key}>
                 <a href="#" id={key+'-text'} style={{color:menuTextColor}} onClick={() => {shuffleDropdown(key+'-text',key) }} >
                     <span  className="menu-item">{key}<i className="fa fa-caret-down"></i></span>
                 </a>
-                <div className="dropdown-container" id={key}>
+                <div className="dropdown-container" id={key} style={{background:menuBackColor}} >
                 {grouped_items[key].map((sub_item,indx)=>{
                     let menu_name = sub_item.list != null ? sub_item.list.label : ''
                     return <a href="#" className='' key={indx} style={{color:menuTextColor}} id = {sub_item.list.id} onClick={() => {navigateMenu(sub_item.list)}}>{menu_name}</a>
@@ -88,18 +93,9 @@ function Sidebar(props) {
                     <h4>Technology</h4>
                 </div>
                 <ul>
-                <li>
-                    <a href="#" id='Home' style={{color:menuTextColor}}>
-                        <span className="menu-item">Home</span>
-                    </a>
-                </li>
                {menu_items}
-               
             </ul>
             </div>
-
-          
-
         </div>
     );
   }

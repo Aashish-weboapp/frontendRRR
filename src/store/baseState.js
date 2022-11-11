@@ -18,11 +18,14 @@ export default {
       list_data:{},
       lookupData:{
         fieldData:{}
-      }
+      },
+      importData:[],
+      listForm:[]
     },
   
     //app module
     appData: {
+      listRows:[],
       customers:[],
       customerData:{},
       customerAddresses:[],

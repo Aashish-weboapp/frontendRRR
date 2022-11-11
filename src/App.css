@@ -41,14 +41,16 @@
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
   padding: 10px;
+  padding-top:0px;
   border-radius: 5px; /* 5px rounded corners */
   background-color: white;
-  overflow:auto; 
-  height:80%
-  
+  overflow:scroll; 
+ 
 }
 
-
+.Entity-Form::-webkit-scrollbar {
+  display: none;
+}
 
 /* Add some padding inside the card container */
 .form-container {
@@ -167,6 +169,58 @@ input[type=file]::file-selector-button:hover {
   font-weight: bold;
 }
 
+.modal-backdrop.show{
+  opacity: 0 !important
+}
 
+.dropdown{
+  float:right;
+}
+
+.dropdown-menu{
+  position:absolute;
+  right:0;
+  margin-top:30px;
+}
+
+label input[type=checkbox] {
+  display: none; /* Hide the default checkbox */
+}
+
+/* Style the artificial checkbox */
+.checkSpan {
+  height: 20px;
+  width: 20px;
+  border: 1px solid grey;
+  display: inline-block;
+  position: relative;
+}
+
+/* Style its checked state...with a ticked icon */
+[type=checkbox]:checked + span:before {
+  content: '\2714';
+  position: absolute;
+  top: -5px;
+  left: 0;
+}
+
+table {
+  /* Not required only for visualizing */
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table thead tr th {
+  /* Important */
+  background-color: white;
+  position: sticky;
+  z-index:0;
+  top: 0;
+}
+
+td {
+  /* Not required only for visualizing */
+  padding: 1em;
+}
 
 

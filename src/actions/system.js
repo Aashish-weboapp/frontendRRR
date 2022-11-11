@@ -6,11 +6,13 @@ import {
     GET__MENU,GET__MENU__LISTS,
     GET__LISTS,GET__LIST__DATA,
     GET__COLUMNS,
-    GET__FORMS,GET__FORM__DATA,
+    GET__FORMS,GET__FORM__DATA,GET__FORM__INFO,
     GET__FIELDS,
     GET__COUNTRIES,
     GET__COUNTRY__DATA,
-    POST__COUNTRY__DATA
+    POST__COUNTRY__DATA,
+    GET__IMPORT__DATA,
+    GET__LIST__FORM
 
 } from './action';
 import { HEADERS } from '../config/appHeaders';
@@ -73,6 +75,14 @@ export const getFormData = (form_id) => {
   });
 }
 
+//get all form info
+export const getFormInfo = (filters) => {
+  return createAction({
+    type: GET__FORM__INFO,
+    action: async () => await axios.get(`${BASE_URL}/forms${filters}`,{ data: {}, headers: HEADERS.AUTHENTIC() })
+  });
+}
+
 //get all fields list
 export const getFields = (filters) => {
   return createAction({
@@ -118,5 +128,21 @@ export const getListData = (list_id) => {
   return createAction({
     type: GET__LIST__DATA,
     action: async () => await axios.get(`${BASE_URL}/lists/${list_id}`,{ data: {}, headers: HEADERS.AUTHENTIC() })
+  });
+}
+
+//get all import data
+export const getImportData = (api_name,file) => {
+  return createAction({
+    type: GET__IMPORT__DATA,
+    action: async () => await axios.post(`${BASE_URL}/${api_name}/import/`,file,{headers: HEADERS.AUTHENTIC() })
+  });
+}
+
+//get form id from form list
+export const getListForm = (filters) => {
+  return createAction({
+    type: GET__LIST__FORM,
+    action: async () => await axios.get(`${BASE_URL}/formlists/${filters}`,{data:{},headers: HEADERS.AUTHENTIC() })
   });
 }

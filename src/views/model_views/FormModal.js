@@ -11,39 +11,28 @@ function FormModal(props) {
     }
 
     let buttonStyle={
-        marginTop:10,
-        marginLeft:15,
-        marginRight:0,
+        padding:25,
         width:40,
         float:'right',
         color: 'rgb(12, 125, 177)'
       }  
 
-      let buttonStyle2={
-        marginTop:10,
-        marginLeft:430,
-        marginRight:0,
-        width:40,
-        float:'right',
-        color: 'rgb(12, 125, 177)'
-      }
-
-      let modalStyle = {
+    let modalStyle = {
         width:'800px'
-      }
+    }
 
     let saveRecord = () =>{
         props.saveRecord(modalData)
         setModalData({'default':false})
     }
 
-    let ModalHeader = <Wrapper>
+    let ModalHeader = <Wrapper style={{width:'100%'}}>
                         <i className={props.icon + ' fa-2x'} style={{color:'green'}}  />
                         <label style={{marginLeft:10,fontSize:20,fontWeight:'bold'}} >{(props.title).toUpperCase()}</label>
                         <Icon icon='fad fa-arrow-down-to-line fa-xl' style={buttonStyle} clickHanlder = {()=>{props.toggleMode()}}/>
                         <Icon icon='fas fa-gear fa-xl' style={buttonStyle} clickHanlder = {()=>{}}/>
                         <Icon icon='fas fa-close fa-xl' style={buttonStyle} clickHanlder = {()=>{props.shuffleMode()}}/>
-                        <Icon icon='fas fa-check fa-xl' style={buttonStyle2} clickHanlder = {()=>{props.toggleMode()}}/>
+                        <Icon icon='fas fa-check fa-xl' style={buttonStyle} clickHanlder = {()=>{saveRecord()}}/>
                     </Wrapper>
 
     let FormSkelton = props.fields.map((header,inx)=>{

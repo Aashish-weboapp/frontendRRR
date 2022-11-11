@@ -4,6 +4,7 @@ import React from "react";
 function CardWrapper(props) {
 
   let formStyle={
+    ...props.style,
     marginLeft : props.left,
     marginTop : props.top
   }

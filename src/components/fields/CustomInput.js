@@ -29,12 +29,14 @@ function CustomInput(props) {
 
   let inputValue = props.value === null ? undefined : props.value
 
+  //composite ,, enterable , link
+
   return (
     <>
         {props.type === 'dropdown'?
         <select className={props.class} style={wdthStyle(100)}>
           {props.choices.map((choice,indx)=>{
-            return <option value={choice.id}>{choice.label}</option>
+            return <option key={'choice'+indx} value={choice.id}>{choice.label}</option>
           })}
         </select>:
         props.type === 'phone'?
@@ -53,6 +55,13 @@ function CustomInput(props) {
         <>
           <textarea className={props.class} style={wdthStyle(100)}/>
         </>:
+        props.type === 'read-only'?
+        <input className={props.class} readOnly
+              placeholder={props.label}
+              style={wdthStyle(widthset)} 
+              type = {props.type}
+              value={inputValue} 
+              onChange={props.onChange}/>:
         <input className={props.class} 
               placeholder={props.label}
               style={wdthStyle(widthset)} 

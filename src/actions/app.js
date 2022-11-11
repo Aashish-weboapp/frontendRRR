@@ -7,11 +7,19 @@ import {
     GET__USERS,
     GET__FORMS,
     GET__FIELDS,
-    GET__ADDRESSES,GET__ADDRESS__DATA
+    GET__ADDRESSES,GET__ADDRESS__DATA,
+    GET__LIST__ROWS
 } from './action';
 import { HEADERS } from '../config/appHeaders';
 import { BASE_URL } from '../config/api';
 
+//get rows of any list
+export const getListRows = (api_name,filters) => {
+  return createAction({
+    type: GET__LIST__ROWS,
+    action:  async () => await axios.get(`${BASE_URL}/${api_name}${filters}`,{ data: {}, headers: HEADERS.AUTHENTIC() })
+  });
+}
 
 
 //get all customer list

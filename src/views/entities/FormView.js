@@ -23,11 +23,19 @@ function FormView(props) {
       }
 
     useEffect(()=>{
-        props.getFormData(props.form_id).then(() => {})
-    },[])
+        if((props.listForm).length > 0)
+        {
+            props.getFormData(props.listForm[0].form.id).then(() => {})
+        }
+    },[props.listForm])
 
     useEffect(()=>{
-        setFormInfo(props.form_info)
+        if((props.listForm).length > 0){
+            setFormInfo(props.form_info)
+        }else{
+            setFormInfo({})
+        }
+        
     },[props.form_info])
 
     useEffect(()=>{
@@ -38,12 +46,6 @@ function FormView(props) {
                 setUpdateData({id:props.dataObj.id})
         }
     },[props.dataObj])
-
-    //only for ordering purpose
-    //useEffect(()=>{
-        //if(props.form_data !=undefined && props.form_data != null )
-            //props.getFields('?ordering=position&form='+props.form_data.id).then(() => {})
-    //},[props.form_data])
 
     let addChangeHandler = (event,name) =>{
         const { value } = event.target;
@@ -84,27 +86,54 @@ function FormView(props) {
         }
     }
 
-    let manageFieldData = (dataObj,field) =>{
-        let fieldKey = field.data
+    let manageFieldData = (dataObj,field,fieldType) =>{
+        let fieldKey = field.field
         if(field.data===""||field.data===null)
             fieldKey=field.label
-        let sepIndex = (field.data).indexOf('.')
-        let dataMap = dataObj[field.data]
+        let sepIndex = (fieldKey).indexOf('.')
+        let dataMap = ''
+        if(fieldType=='composite')
+        {
+            let compFields = fieldKey.split('+')
+            compFields.map((field,indx)=>{
+                if(dataObj[field]!= null && dataObj[field] != '')
+                    dataMap = dataObj[field] + ' '
+            })
+            
+        }else{
+            dataMap = dataObj[fieldKey]
+        }
         if(sepIndex !== -1)
         {
-            dataMap = dataObj[(field.data).substring(0, sepIndex)]
+            dataMap = dataObj[(fieldKey).substring(0, sepIndex)]
             if(dataMap != null)
-                dataMap = dataMap[(field.data).substring(sepIndex+1, field.data.length)]
+                dataMap = dataMap[(fieldKey).substring(sepIndex+1, fieldKey.length)]
         }
         return dataMap
     }
 
+    //Comparer Function    
+    let GetSortOrder = (key,nkey) => {    
+        return function(a, b) {
+            if(a[key] != null && b[key] != null)
+            { 
+                if (a[key][nkey] > b[key][nkey]) {  
+                    return 1;    
+                } else if (a[key][nkey] < b[key][nkey]) {    
+                    return -1;    
+                }
+            }
+            return 0;    
+        }   
+    }
+
     const groupByMake = (arr = [],key,key2) => {
+        arr.sort(GetSortOrder('section','section_sequence'))
         let result = [];
         if(arr.length > 0 ){
             result = arr.reduce((r, a) => {
             let divider = a[key]
-            if (key2 != '' && key2 != null){
+            if (key2 != '' && key2 != null && a[key] != null){
                 divider = a[key][key2]
             }
             r[divider] = r[divider] || [];
@@ -114,43 +143,35 @@ function FormView(props) {
         return result;
      };
 
-     function GetSortOrder(prop) {    
-        return function(a, b) {    
-            if (a[prop] > b[prop]) {    
-                return 1;    
-            } else if (a[prop] < b[prop]) {    
-                return -1;    
-            }    
-            return 0;    
-        }    
-    }
-
     let grouped_items = groupByMake(form_info.form_data,'section','section_title')
+
 
     let FormSkelton = Object.keys(grouped_items).map((fieldGrp,inx)=>{
         let column_grouped = groupByMake(grouped_items[fieldGrp],'column','')
         return (
         <div className='row' key={inx}>
-            <div className='row'>
-                <label className='section'><i>{fieldGrp}</i><span class="line"></span></label>
-            </div>
+            {fieldGrp != null && fieldGrp != undefined  && fieldGrp != 'null'? 
+                <div className='row'>
+                    <label className='section'><i>{fieldGrp}</i><span class="line"></span></label>
+                </div>:
+                <></>}
             {Object.keys(column_grouped).map((columnGrp,indx)=>{
                 return(
-                <div className='col-6'>
+                <div className='col-6' key={'column-'+indx}>
                     {column_grouped[columnGrp].map((columnField,inddx)=>{
                     
                       let heading = ((columnField.label).charAt(0)).toUpperCase() + ((columnField.label).slice(1)).replace('_',' ')
-                      let dataMap = manageFieldData(formData,columnField)
-                      let fieldName = columnField.data
-                      let fieldWdth = columnField.type === 'multi-line' ? '75%' : '25%'
+                      let dataMap = manageFieldData(formData,columnField,columnField.type)
+                      let fieldName = columnField.field
+                      let fieldWdth = '25%'
                       if(fieldName =='' || fieldName == null)
-                          fieldName = columnField.name
+                          fieldName = columnField.data
                       if(fieldName=='entity' && dataMap == '1')
                           dataMap='Individual'
                       if(fieldName=='entity' && dataMap == '2')
                           dataMap='Company'
                       return (
-                          <React.Fragment key={indx}>
+                          <React.Fragment key={columnField.id}>
                               <Label label={heading} class='col-md-3 formLabel' parentClass='fieldRtl'/>
                               {props.formMode === 'view'?
                                   <Label label={dataMap} class='col-md-3 formValue' parentClass='' />:
@@ -159,7 +180,7 @@ function FormView(props) {
                                       <Input label={''} type={columnField.type} class='col-md-3 formInput' choices={columnField.choices}  value={dataMap} onChange={(event)=>{editChangeHandler(event,fieldName)}} />
                                   </div>:
                                   <div className='fieldWrap' style={{width:fieldWdth}}>
-                                      <Input label={''} type={columnField.type} class='col-md-3 formInput' value={formData[fieldName]} onChange={(event)=>{addChangeHandler(event,fieldName)}} />
+                                      <Input label={''} type={columnField.type} class='col-md-3 formInput' choices={columnField.choices} value={formData[fieldName]} onChange={(event)=>{addChangeHandler(event,fieldName)}} />
                                   </div>}
                           </React.Fragment>)   
                     })}
@@ -169,6 +190,8 @@ function FormView(props) {
 
     let iconStage = formData.stage != undefined ?  formData.stage.stage:'no'
 
+    let formLists = form_info.form_list != undefined ? form_info.form_list.filter(formList=>formList.relation != 'parent') : []
+
     return (
         <Wrapper>
             {props.formMode === 'edit' ?
@@ -177,21 +200,24 @@ function FormView(props) {
                 <FormHeader recordID={props.recordID} changeMode={props.changeMode} formMode={props.formMode} 
                             recControl={(formID)=>{props.loadFormData(formID)}} saveRecord = {()=>props.saveRecord(formData)}/>}
 
-            <Card top={20}>
-                <i className={props.icon+' fa-5x'} style={{color:iconColor[iconStage]}}></i>
+            <Card top={20} style={{minHeight:'200px'}}>
+                {props.icon != undefined && props.icon != ''?
+                    <i className={props.icon+' fa-4x'} style={{color:iconColor[iconStage]}}></i>:
+                    <></>}
                 <label style={titleStyle}>{formData['name']}</label><br></br><br></br>
                 {FormSkelton}
             </Card>
-           {props.form_info.form_list != undefined?
-                props.form_info.form_list.map((formList,indx)=>{
-                    let columns = formList.list != null ? formList.list.columns : []
-                    let label = formList.list != null ? formList.list.label : ''
-                    return <SubListView title={label} changeMode={props.changeMode} tableMode={props.formMode}
-                                        loadFormData={props.loadFormData} headers={columns} type={'Customer'}
+            {formLists.map((formList,indx)=>{
+                let columns = formList.list != null ? formList.list.columns : []
+                let label = formList.list != null ? formList.list.label : ''
+                let rows = props.lists.length != undefined ? props.lists.filter(record=>record.type==formList.relation):[] 
+                return <React.Fragment key={indx}>
+                            <SubListView title={label} changeMode={props.changeMode} tableMode={props.formMode}
+                                        loadFormData={props.loadFormData} headers={columns} type={formList.relation}
                                         icon = {formList.icon}
-                                        loadList={()=>{}} rows={[]}/>
-                }):
-            <></>}
+                                        loadList={props.loadList} rows={rows}/>
+                       </React.Fragment>
+            })}
           </Wrapper>
     );
 }
@@ -199,7 +225,8 @@ function FormView(props) {
 const mapStateToProps = state => {
     return {
         form_info: state.sysData.form_info,
-        field_items:state.sysData.field_items
+        field_items:state.sysData.field_items,
+        listForm:state.sysData.listForm
     };
   };
   

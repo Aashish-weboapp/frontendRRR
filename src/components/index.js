@@ -19,7 +19,7 @@ export { default as Table } from './lists/Table';
 export { default as SubTable } from './lists/SubTable';
 
 //modal
-export { default as Modal } from './modals/BootstrapModal';
+export { default as BootstrapModal } from './modals/BootstrapModal';
 export { default as CustomModal } from './modals/CustomModal';
 
 //Messages Folder

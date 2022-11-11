@@ -10,17 +10,29 @@ function ListView(props) {
         setImportMode(!importMode)
     }
 
+    let importData = (file) =>{
+        props.importData(props.data_source,file)
+        toggleImport()
+    }
+
+    let listHeaders = props.headers != undefined ? props.headers.filter(header=>header.required == true) : []
+
+    let searchSelector = props.headers != undefined ? (props.headers).length > 0 ? props.headers[0].field : '' : ''
+
     return (
         <Wrapper>
-            <ListHeader icon='fas fa-bars fa-border icon' iconHandler={props.menuToggle} openImport={toggleImport} searchControl={props.searchByName} changeMode={props.changeMode} listTitle={props.title} />
-            <Card top={20}>
+            <ListHeader icon='fas fa-bars fa-border icon' iconHandler={props.menuToggle} openImport={toggleImport} searchControl={props.searchControl} 
+                        changeMode={props.changeMode} listTitle={props.title} searchSelector={searchSelector} />
+            <Card top={20} style={{height:'900px'}}>
                 <></>
-                <Table headers={props.headers} rows={props.rows} headerType='Json' default={true} defaultLabel={'check'} visible={true}
+                <Table headers={listHeaders} rows={props.rows} headerType='Json' default={true} defaultLabel={'check'} visible={true}
                        status={true} changeMode={props.changeMode} loadFormData={props.loadFormData}/>
             </Card>
-            <FileUpload modalShow={importMode} 
-                       title={'Import ' + props.title}
-                       toggleMode={toggleImport}/>
+            {importMode === true?
+                <FileUpload title={'Import ' + props.title}
+                            fileHandler = {importData}
+                            toggleMode={toggleImport} />:
+                <></>}
             
         </Wrapper>
     );

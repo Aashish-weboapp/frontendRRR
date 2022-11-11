@@ -5,10 +5,11 @@ import { Button , Dropdown, Input } from "../../components";
 function ListHeader(props) {
 
     let searchStyle={
-        height : 30,
+        height : 35,
         width : 150,
         float:'right',
         border: '1px solid black',
+        padding:'8px'
       }
       
       let titleStyle={
@@ -18,10 +19,10 @@ function ListHeader(props) {
       }
       
       let buttonStyle={
-        padding:2,
+        padding:4,
         marginLeft:4,
         marginRight:3,
-        width:30,
+        width:40,
         float:'right',
         border: '1px solid black',
         borderRadius: '3px',
@@ -36,7 +37,7 @@ function ListHeader(props) {
       
       
     let hanldeChange = (event) =>{
-      props.searchControl(event.target.value)
+      props.searchControl(props.searchSelector,event.target.value)
     }
 
     let searchAction = () =>{
@@ -51,12 +52,20 @@ function ListHeader(props) {
       props.changeMode('add')
     }
 
+    let reOrderLabel = 'Re-Order '+props.listTitle;
+
   return (
     <>
-        <Button type='dropdown' btn='' icon='fas fa-search' style={buttonStyle} value = '' clickHanlder = {searchAction} />
-        <Button type='button' btn='' icon='fas fa-gear' style={buttonStyle} value = '' clickHanlder = {openImport} />
-        <Button type='dropdown' btn='' icon='fas fa-eye' style={buttonStyle} value = '' clickHanlder = {()=>{}} />
+        <Button type='dropdown' btn='' icon='fas fa-gear' style={buttonStyle} value = '' clickHanlder = {()=>{}} 
+                 options = {[reOrderLabel]}/>
+        <Button type='dropdown' btn='' icon='fas fa-eye' style={buttonStyle} value = '' clickHanlder = {()=>{}}
+                options = {['Export','Customize Columns']}  />
         <Button type='button' btn='' icon='fas fa-plus' style={buttonStyle} value = '' clickHanlder = {addRecord} />
+        <Button type='dropdown' btn='' icon='fas fa-search' style={buttonStyle} value = '' clickHanlder = {searchAction} 
+                options = {['Status','ID','Advanced Search']} />
+        <Button type='button' btn='' icon='fas fa-file-import' style={buttonStyle} value = '' clickHanlder = {openImport} />
+       
+        
         <Button btn='' icon={props.icon} style={borderStyle} value = '' clickHanlder = {()=>{props.iconHandler()}}/>
         <label style={titleStyle}>{props.listTitle}</label>
         

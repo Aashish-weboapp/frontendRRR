@@ -1,15 +1,15 @@
 import baseState from '../store/baseState';
 import {
-     GET__LOOKUP,
+     GET__LOOKUP,GET__IMPORT__DATA,
      GET__MENU, GET__MENU__LISTS,
      GET__LISTS , GET__COLUMNS,
      GET__FORMS, GET__FIELDS, 
-     GET__COUNTRIES , GET__COUNTRY__DATA , POST__COUNTRY__DATA, GET__FORM__DATA, GET__LIST__DATA
+     GET__COUNTRIES , GET__COUNTRY__DATA , POST__COUNTRY__DATA, GET__FORM__DATA,GET__FORM__INFO, GET__LIST__DATA,GET__LIST__FORM
 } from '../actions/action';
 
 export default (state = baseState.sysData, { payload, type, error }) => {
+ 
   switch (type) {
-
     case GET__LOOKUP.REQUEST:
       return {
         ...state,
@@ -25,6 +25,23 @@ export default (state = baseState.sysData, { payload, type, error }) => {
         return {
           ...state,
           lookupData: payload
+        };
+
+    case GET__IMPORT__DATA.REQUEST:
+      return {
+        ...state,
+      };
+
+    case GET__IMPORT__DATA.SUCCESS:
+      return {
+        ...state,
+        importData: payload.data
+      };
+
+    case GET__IMPORT__DATA.FAILURE:
+        return {
+          ...state,
+          importData: payload
         };
 
     case GET__MENU.REQUEST:
@@ -107,6 +124,23 @@ export default (state = baseState.sysData, { payload, type, error }) => {
       };
 
     case GET__FORM__DATA.FAILURE:
+        return {
+          ...state,
+          form_info: payload.data
+        };
+
+     case GET__FORM__INFO.REQUEST:
+      return {
+        ...state,
+      };
+
+    case GET__FORM__INFO.SUCCESS:
+      return {
+        ...state,
+        form_info: payload.data
+      };
+
+    case GET__FORM__INFO.FAILURE:
         return {
           ...state,
           form_info: payload.data
@@ -212,6 +246,23 @@ export default (state = baseState.sysData, { payload, type, error }) => {
         return {
           ...state,
           lists: payload
+        };
+
+    case GET__LIST__FORM.REQUEST:
+      return {
+        ...state,
+      };
+
+    case GET__LIST__FORM.SUCCESS:
+      return {
+        ...state,
+        listForm: payload.data
+      };
+
+    case GET__LIST__FORM.FAILURE:
+        return {
+          ...state,
+          listForm: []
         };
 
     default:

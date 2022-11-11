@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Modal from 'react-bootstrap/Modal';
 import  '../../styles/components/Modal.css'
 
-function CustomModal(props) {
+function BootstrapModal(props) {
       
   return (
     <Modal
@@ -11,7 +11,9 @@ function CustomModal(props) {
       aria-labelledby="contained-modal-title-vcenter"
       contentClassName="modal-height"
       centered>
-      
+       <Modal.Header closeButton>
+        <Modal.Title>{props.title}</Modal.Title>
+      </Modal.Header>
       <Modal.Body>
       
        {props.modalbody}
@@ -23,4 +25,4 @@ function CustomModal(props) {
   );
 }
 
-export default CustomModal;
+export default BootstrapModal;

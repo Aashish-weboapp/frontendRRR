@@ -16,6 +16,14 @@ export const HEADERS = {
             'Cache-Control': 'no-cachey',
             'Access-Control-Allow-Origin' : '*'
         }
+    },
+    FILE: () => {
+        return {
+            'Accept': 'application/json,text/plain',
+            'Content-Type': '',
+            'Authorization': `Bearer ${localStorage.getItem('accesToken')}`,
+            'Cache-Control': 'no-cache',
+        }
     }
 }
 

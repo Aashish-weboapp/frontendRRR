@@ -21,7 +21,13 @@ body{
     height: 100%;
     padding: 20px 0;
     transition: all 0.5s ease;
+    overflow-y: scroll;
 }
+
+.sidebar::-webkit-scrollbar {
+    display: none;
+}
+
 
 
 
@@ -72,8 +78,7 @@ body{
 .wrapper .sidebar ul li a:hover,
 .wrapper .sidebar ul li a.active{
     color: #0c7db1;
-
-    background:white;
+    background-color: #1C75BC;
     border-right: 2px solid rgb(5, 68, 104);
 }
 
@@ -170,11 +175,10 @@ body.active .wrapper .section{
   /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
   .dropdown-container {
     display: none;
-    background-color: #262626;
     padding-left: 8px;
   }
   
-  /* Optional: Style the caret down icon */
+  /* Optional: Style the caret down icon background-color: #262626; */  
   .fa-caret-down {
     float: right;
     padding-right: 8px;

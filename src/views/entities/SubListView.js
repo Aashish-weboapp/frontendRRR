@@ -43,7 +43,7 @@ function SubListView(props) {
 
     return (
         <Wrapper>
-            <Card top={20}>
+            <Card top={20} style={{minHeight:'100px'}}>
                 <TableHeader title={props.title} headerIcon = {props.icon} tableMode={props.tableMode} visible={visible} setVisible={setVisible} toggleAddMode={toggleAddMode} toggleExportMode={toggleExportMode}/>
                 <SubTable headers={props.headers} rows={tableRows} removeRow={removeRow} pushRow={()=>{}}
                        headerType='Json' defaultLabel={defaultLabel} visible={visible}

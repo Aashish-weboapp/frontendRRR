@@ -15,8 +15,9 @@ import Droppable from '../drag&drop/Droppable';
 
 function Template(props) {
 
-    const [menu_info,setMenuItems] = useState({menu_items:[],menuOpen:true,menu_margin:250});
-    const [list_info,setListInfo] = useState({label:'Home',id:0})
+    const [menu_info,setMenuItems] = useState({menu_items:[],menuOpen:true,menu_margin:250,form_mode:'list'});
+    const [list_info,setListInfo] = useState({label:'Home',id:0,data_source:''})
+    const [icon,setIcon] = useState('')
 
     useEffect(()=>{
         props.getMenus('?ordering=sequence').then(() => {
@@ -30,6 +31,8 @@ function Template(props) {
 
     let  routeForm = (list) =>{
         props.getListData(list.id).then(() => {})
+        setIcon(list.icon)
+        setMenuItems(menu_info => ({ ...menu_info, form_mode:'list' }))
         //calling it to maintain ordering
         //let column_filter = '?list='+list.id+'&ordering=position'
         //props.getColumns(column_filter).then(() => {})
@@ -52,13 +55,13 @@ function Template(props) {
             <Sidebar items={props.menu_items} navigateMenu={routeForm} />
             <Wrapper class='mb-2' style={{marginLeft:menu_info.menu_margin,marginTop:30,marginRight:20}}>
                 <></>
-                {list_info.label==='Home'?
+                {list_info.label===undefined||list_info.label==='Home'?
                 <></>:
-                list_info.label ==='Customers'?
-                    <Customer  menuToggle={menuToggle} list_info={list_info}/>:
-                list_info.label ==='Configurations'?
+                list_info.label ==='Custommers'?
+                    <Customer  menuToggle={menuToggle} list_info={list_info} icon={icon} />:
+                list_info.label ==='Configurathions'?
                     <DndProvider backend={HTML5Backend}><Droppable list_info={list_info}/></DndProvider>:
-                <System list_info={list_info} />}  
+                <System menuToggle={menuToggle} list_info={list_info} form_mode={menu_info.form_mode} icon={icon} />}  
             </Wrapper>
       </Wrapper> 
     );

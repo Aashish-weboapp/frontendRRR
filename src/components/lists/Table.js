@@ -33,9 +33,9 @@ function Table(props) {
         heading = ((header.label).charAt(0)).toUpperCase() + ((header.label).slice(1)).replace('_',' ')
       }
       return (
-          <th key={idx} className={"table-header"}>
-            {heading}
-          </th>
+            <th key={idx} className={"table-header"}>
+              {heading}
+            </th>
       )
   }) : <></>
 
@@ -49,7 +49,10 @@ function Table(props) {
 
   let defaultHeaders = props.default === true ? 
                     (<th className={"table-header"} onClick={()=>{}}>
-                      {defaultLabel}
+                      <label>
+                        {defaultLabel}
+                        <span className='checkSpan'></span>
+                      </label>
                     </th>) :
                     <></>
                     
@@ -60,21 +63,24 @@ function Table(props) {
         <>
           <tr className='table-row ' key={idx} style={{ cursor: 'pointer' }}>
             <td key={'check'+idx}>  
-              <input type='checkbox' style={{marginLeft:10}}/>
+              <label>
+                <input type='checkbox' style={{marginLeft:10}}/>
+                <span className='checkSpan'></span>
+              </label>
             </td>
             {props.headers.map((header, indx) => {
-              let sepIndex = (header.column).indexOf('.')
-              let dataMap = data[header.column]
+              let sepIndex = (header.field).indexOf('.')
+              let dataMap = data[header.field]
               if(sepIndex != -1)
                 {
-                  dataMap = data[(header.column).substring(0, sepIndex)]
+                  dataMap = data[(header.field).substring(0, sepIndex)]
                   if(dataMap != null)
-                    dataMap = dataMap[(header.column).substring(sepIndex+1, header.column.length)]
+                    dataMap = dataMap[(header.field).substring(sepIndex+1, header.field.length)]
                 }
-              return <td key={indx}  onClick={()=>{viewRecord(data)}} >{dataMap}</td>
+              return <td key={'row-'+indx}  onClick={()=>{viewRecord(data)}} >{dataMap}</td>
             })}
             {props.status === true?
-              <td key={'status-'+idx}>
+              <td key={'status-'+idx} onClick={()=>{viewRecord(data)}}>
                 <i className='fas fa-circle' style={{'color':colorOptions[data['status']],paddingLeft:20}}/>
               </td>:<></>}
           </tr>

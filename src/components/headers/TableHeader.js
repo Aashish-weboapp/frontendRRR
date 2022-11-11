@@ -7,8 +7,7 @@ import CustomButton from "./../fields/CustomButton";
 function TableHeader(props) {
       
       let buttonStyle={
-        marginTop:10,
-        marginLeft:1,
+        padding:20,
         width:30,
         float:'right',
         color: 'rgb(12, 125, 177)'
