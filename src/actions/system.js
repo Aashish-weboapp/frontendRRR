@@ -132,10 +132,10 @@ export const getListData = (list_id) => {
 }
 
 //get all import data
-export const getImportData = (api_name,file) => {
+export const getImportData = (api_name,payload) => {
   return createAction({
     type: GET__IMPORT__DATA,
-    action: async () => await axios.post(`${BASE_URL}/${api_name}/import/`,file,{headers: HEADERS.AUTHENTIC() })
+    action: async () => await axios.post(`${BASE_URL}/${api_name}/import/`,payload,{headers: HEADERS.AUTHENTIC() })
   });
 }
 

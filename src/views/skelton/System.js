@@ -63,11 +63,13 @@ function System(props) {
         }
       }
 
-      let importData = (import_path,file)=>{
+      let importData = (import_path,file,mapObject)=>{
         let formData = new FormData();
         formData.append("file", file);
+        formData.append("sequences",JSON.stringify(mapObject))
         props.getImportData(import_path,formData).then(() =>{
           alert('Data Import Operation Completed')
+          props.getListRows(props.list_info.data_source,'/').then(()=>{})
         })
       }
 

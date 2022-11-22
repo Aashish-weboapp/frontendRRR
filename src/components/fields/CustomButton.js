@@ -9,7 +9,7 @@ function CustomButton(props) {
 
   let htmlButton = <button ref={props.ref} style={props.style} className='formButton' onClick={()=>clickHanlder(props.value)}>{props.btn}<i className={props.icon}></i></button>
 
-  let typeButton =  props.type === 'dropdown' ? <Dropdown button = {htmlButton} icon={props.icon} options={props.options} /> : htmlButton
+  let typeButton =  props.type === 'dropdown' ? <Dropdown button = {htmlButton} icon={props.icon} options={props.options} check={props.check}/> : htmlButton
                         
 
   return (

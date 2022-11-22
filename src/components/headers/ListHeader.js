@@ -23,6 +23,7 @@ function ListHeader(props) {
         marginLeft:4,
         marginRight:3,
         width:40,
+        height:35,
         float:'right',
         border: '1px solid black',
         borderRadius: '3px',
@@ -54,15 +55,21 @@ function ListHeader(props) {
 
     let reOrderLabel = 'Re-Order '+props.listTitle;
 
+    let visHeaders = []
+
+    props.headers.map((header,indx)=>{
+      visHeaders.push(header.label)
+    })
+
   return (
     <>
         <Button type='dropdown' btn='' icon='fas fa-gear' style={buttonStyle} value = '' clickHanlder = {()=>{}} 
-                 options = {[reOrderLabel]}/>
+                 options = {[reOrderLabel]} check={false}/>
         <Button type='dropdown' btn='' icon='fas fa-eye' style={buttonStyle} value = '' clickHanlder = {()=>{}}
-                options = {['Export','Customize Columns']}  />
+                options = {visHeaders} check={true}  />
         <Button type='button' btn='' icon='fas fa-plus' style={buttonStyle} value = '' clickHanlder = {addRecord} />
         <Button type='dropdown' btn='' icon='fas fa-search' style={buttonStyle} value = '' clickHanlder = {searchAction} 
-                options = {['Status','ID','Advanced Search']} />
+                options = {['Status','ID','Advanced Search']} check={false}/>
         <Button type='button' btn='' icon='fas fa-file-import' style={buttonStyle} value = '' clickHanlder = {openImport} />
        
         

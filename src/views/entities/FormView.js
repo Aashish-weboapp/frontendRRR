@@ -109,6 +109,10 @@ function FormView(props) {
             if(dataMap != null)
                 dataMap = dataMap[(fieldKey).substring(sepIndex+1, fieldKey.length)]
         }
+        if(fieldKey === 'created_time' || fieldKey === 'modified_time' || fieldKey === 'used')
+        {
+            dataMap = (new Date(dataObj[fieldKey])).toLocaleDateString('en-US')
+        }
         return dataMap
     }
 
@@ -177,10 +181,10 @@ function FormView(props) {
                                   <Label label={dataMap} class='col-md-3 formValue' parentClass='' />:
                               props.formMode === 'edit'?
                                   <div className='fieldWrap' style={{width:fieldWdth}}>
-                                      <Input label={''} type={columnField.type} class='col-md-3 formInput' choices={columnField.choices}  value={dataMap} onChange={(event)=>{editChangeHandler(event,fieldName)}} />
+                                      <Input label={columnField.field} type={columnField.type} class='col-md-3 formInput' choices={columnField.choices}  value={dataMap} onChange={(event)=>{editChangeHandler(event,fieldName)}} />
                                   </div>:
                                   <div className='fieldWrap' style={{width:fieldWdth}}>
-                                      <Input label={''} type={columnField.type} class='col-md-3 formInput' choices={columnField.choices} value={formData[fieldName]} onChange={(event)=>{addChangeHandler(event,fieldName)}} />
+                                      <Input label={columnField.field} type={columnField.type} class='col-md-3 formInput' choices={columnField.choices} value={formData[fieldName]} onChange={(event)=>{addChangeHandler(event,fieldName)}} />
                                   </div>}
                           </React.Fragment>)   
                     })}

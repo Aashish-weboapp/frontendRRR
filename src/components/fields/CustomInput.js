@@ -27,7 +27,13 @@ function CustomInput(props) {
 
   let widthset = props.type === 'search' ? 30 : props.type === 'modalField' ? props.width : 100
 
-  let inputValue = props.value === null ? undefined : props.value
+  let inputValue = props.value === null ? undefined :  props.value
+  
+  if(props.label === 'created_time' || props.label === 'modified_time' || props.label === 'used' )
+  {
+    inputValue = (new Date(props.value)).toLocaleDateString('en-US')
+    console.log('in time',inputValue)
+  }
 
   //composite ,, enterable , link
 

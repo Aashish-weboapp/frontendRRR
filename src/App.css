@@ -223,4 +223,8 @@ td {
   padding: 1em;
 }
 
+.importField:disabled{
+  color:red !important;
+}
+
 

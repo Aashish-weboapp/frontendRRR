@@ -10,6 +10,7 @@ function CustomDropdown(props) {
     marginRight:3,
     marginBottom:4,
     width:40,
+    height:35,
     float:'right',
     border: '1px solid black',
     borderRadius: '3px',
@@ -35,7 +36,7 @@ function CustomDropdown(props) {
 
       <Dropdown.Menu drop={'start'} align='end'>
         {props.options.map((option,indx)=>{
-          return <Dropdown.Item href={"#/"+option}>{option}</Dropdown.Item>
+          return <Dropdown.Item href={"#/"+option}>{props.check== true?<><input type='checkbox' checked />&nbsp;&nbsp;</>:<></>}{option}</Dropdown.Item>
         })}
         
       </Dropdown.Menu>
