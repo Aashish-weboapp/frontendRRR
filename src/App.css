@@ -208,6 +208,11 @@ table {
   /* Not required only for visualizing */
   border-collapse: collapse;
   width: 100%;
+  
+}
+
+.modalTable{
+  overflow-x: scroll;
 }
 
 table thead tr th {
@@ -226,5 +231,26 @@ td {
 .importField:disabled{
   color:red !important;
 }
+
+::-webkit-scrollbar {
+ height: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb{
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+
 
 

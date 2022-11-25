@@ -12,6 +12,7 @@ function FileUpload(props) {
 
     const [file,setFile] = useState('')
     const [columns,setColumns] = useState([])
+    const [rows,setRows] = useState([])
     const [mapObject,setMapObject] = useState({})
 
     useEffect(()=>{
@@ -21,6 +22,12 @@ function FileUpload(props) {
         }
     },[props.listForm])
 
+    
+    let borderStyle= {
+        border: '1px solid black',
+        borderCollapse: 'collapse'
+    }
+
     let saveFile = (event) =>{
         var f = event.target.files[0];
                 //f = file
@@ -29,29 +36,33 @@ function FileUpload(props) {
         reader.onload = (evt) => { // evt = on_file_select event
             /* Parse data */
             const bstr = evt.target.result;
-            const wb = XLSX.read(bstr, {type:'binary',sheetRows:1});
+            const wb = XLSX.read(bstr, {type:'binary'});
             /* Get first worksheet */
             const wsname = wb.SheetNames[0];
             const ws = wb.Sheets[wsname];
             /* Convert array of arrays */
             const data = XLSX.utils.sheet_to_csv(ws, {header:1});
             /* Update state */
-            setColumns(data.split(','))
-            console.log("Data>>>"+typeof(data.split(',')));
+            const sheet_data = data.split(/\r?\n/)
+            setColumns((sheet_data.shift()).split(','))
+            setRows(sheet_data)
+            setDatamap()
         };
         reader.readAsBinaryString(f);
         setFile(f)
-        setDatamap()
     }
 
     let setDatamap = () =>{
+        console.log('in caee')
         let mapObject = {}
-        columns.map((column,indx)=>{           
+        columns.map((column,indx)=>{  
+            console.log('in column confition'+column)         
                 props.form_info!=undefined?
                 props.form_info.form_data!=undefined?
                 props.form_info.form_data.map((header,idx)=>{
                     if(column.toLowerCase() == (header.label).toLowerCase() || column.toLowerCase() == (header.field).toLowerCase())
                     {
+                        console.log('in if confition'+header.label)
                         mapObject[header.field] = indx-1
                     }
                     
@@ -67,6 +78,12 @@ function FileUpload(props) {
     let toggleMode = () =>{
         setColumns([])
         props.toggleMode();
+    }
+
+    let checkAllNone = (array) =>{
+        for (var i = 0; i < array.length; i++) 
+            if (array[i]) return false;
+        return true;
     }
 
     let uploadCnt = <React.Fragment>
@@ -89,53 +106,43 @@ function FileUpload(props) {
                 
 
     let columnCont = <React.Fragment>
-                    <div className='row'>
-                        <div className='col-sm-2'>
-                            <br></br>
-                            <h6><b>Imported File</b></h6>
-                            <input type='checkbox' checked/>&nbsp;&nbsp;Use First Row as Header
-                        </div>
-                        <div className='col-sm-10'>
-                       <table style={{border:'2pt solid #e9ecef'}}>
+                    <div className='modalTable'>
+                       <table className = 'importTable' style={borderStyle}>
                         <thead>
+                            <tr >
+                                {columns.map((column,indx)=>{
+                                    return <th style={borderStyle}><select className='importField' style={{borderRadius:'5px'}}><option selected disabled  >To import , select a field</option>
+                                        {props.form_info.form_data!=undefined?
+                                            props.form_info.form_data.map((header,idx)=>{
+                                                let impOption =  column.toLowerCase() == (header.label).toLowerCase() || column.toLowerCase() == (header.field).toLowerCase()?
+                                                                <option selected>{header.label}</option>:
+                                                                <option>{header.label}</option>
+                                                return <>{impOption}</>}):<></>}
+                                    </select></th>})}
+                            </tr>
                             <tr>
-                                <th>File Column</th>
-                                <th>CT Field</th>
-                                <th>Comments</th>
+                                {columns.map((column,indx)=>{
+                                    return <th style={{...borderStyle,backgroundColor:'#dee2e6'}}>{(column.charAt(0)).toUpperCase() + (column.slice(1)).replace('_',' ')}</th>})}
                             </tr>
                         </thead>
                         <tbody style={{overflow:'scroll'}}>
-                            {columns.map((column,indx)=>{
-                               
-                                return <tr style={{borderBottom:'2pt solid #e9ecef',height:'86px'}}>
-                                    <td><b>{column}</b></td>
-                                    <td><select className='importField' style={{borderRadius:'5px'}}><option selected disabled  >To import , select a field</option>
-                                    {(props.listForm).length>0 && props.form_info!=undefined?
-                                    props.form_info.form_data!=undefined?
-                                    props.form_info.form_data.map((header,idx)=>{
-                                        if(column.toLowerCase() == (header.label).toLowerCase() || column.toLowerCase() == (header.field).toLowerCase())
-                                        {
-                                            mapObject[header.field] = indx+1
-                                        }
-                                        let impOption = column.toLowerCase() == (header.label).toLowerCase() || column.toLowerCase() == (header.field).toLowerCase()?
-                                                        <option selected>{header.label}</option>:
-                                                        <option>{header.label}</option>
-                                        return <>{impOption}</>
-                                    }):<></>:<></>}
-                                    </select></td>
-                                    <td></td>
-                                </tr>
+                           {rows.map((row,indx)=>{
+                                let rowData = row.split(',')
+                                if(checkAllNone(rowData) == false)
+                                {
+                                    return <tr> {rowData.map((data,inddx)=>{
+                                        return <td style={borderStyle}>{data}</td>
+                                    })}</tr>
+                                }
                             })}
+                              
                         </tbody>
                        </table>
+                     
+                       </div>
                        <Button variant="primary" size="lg" onClick={()=>{uploadFile()}} style={{float:'right',marginTop:'10px',marginBottom:'10px',marginRight:'10px'}}>
                                     Next
                         </Button>
-                        <Button variant="primary" size="lg" onClick={()=>{setFile('')}} style={{float:'right',marginTop:'10px',marginBottom:'10px',marginRight:'10px'}}>
-                                    Previous
-                        </Button>
-                       </div>
-                       </div>
 
 
                     </React.Fragment>
@@ -145,7 +152,7 @@ function FileUpload(props) {
         <>
             {file == ''?
                 <CustomModal display={true} title={props.title} onHide={props.toggleMode} modalbody={uploadCnt} modalheader={<div><h4>{props.title}</h4></div>} closeBtn={true}/>:
-                <CustomModal display={true} title={'in this'} onHide={props.toggleMode} modalbody={columnCont} modalheader={<div><h3>Import a File</h3></div>} closeBtn={true}/>}
+                <CustomModal display={true} title={'in this'} onHide={props.toggleMode} modalbody={columnCont} modalheader={<div><h3><b>{props.title}</b></h3></div>} closeBtn={true}/>}
 
            
         </>
