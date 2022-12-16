@@ -27,5 +27,5 @@ jobs:
 
     - name: build
       run: |
-        desti: erp_frontend
+        cd erp_frontend
         git clone https://github.com/vedanshu-insonix/erp-react-frontend.git
