@@ -1,4 +1,4 @@
-name: Node.js CI
+name: NodeJS with Webpack
 
 on:
   push:
@@ -8,23 +8,24 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [18.9.0]
+        node-version: [14.x, 16.x, 18.x]
+
     steps:
-    - uses: actions/checkout@v2
-    - name: SSH Remote Commands
-      uses: appleboy/ssh-action@master
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
       with:
         host: ${{ secrets.UBUNTU_IP }}
         username: ${{ secrets.UBUNTU_USERNAME }}
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
-        run: |
-            mkdir erp_frontend 
-            cd erp_frontend 
-            git clone git@github.com:vedanshu-insonix/erp-react-frontend.git 
-	    
+
+    - name: Build
+      run: |
+        makdir erp_frontend
+        cd erp_frontend
