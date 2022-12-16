@@ -16,14 +16,13 @@ jobs:
         node-version: [18.9.0]
     steps:
     - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: SSH Remote Commands
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.UBUNTU_IP }}
         username: ${{ secrets.UBUNTU_USERNAME }}
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
-        node-version: ${{ matrix.node-version }}
         script: |
             mkdir erp_frontend 
             cd erp_frontend 
