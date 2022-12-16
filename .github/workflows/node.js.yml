@@ -24,8 +24,8 @@ jobs:
         username: ${{ secrets.UBUNTU_USERNAME }}
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
+        publish_dir: erp_frontend
 
     - name: build
       run: |
-        erp_frontend
         git clone https://github.com/vedanshu-insonix/erp-react-frontend.git
