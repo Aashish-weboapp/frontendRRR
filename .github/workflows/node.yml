@@ -17,7 +17,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.UBUNTU_IP }}
         username: ${{ secrets.UBUNTU_USERNAME }}
@@ -25,4 +25,7 @@ jobs:
         port: ${{ secrets.PORT }}
         node-version: ${{ matrix.node-version }}
         script: |
-			    cd test git clone git@github.com:vedanshu-insonix/erp-react-frontend.git
+            mkdir erp_frontend 
+            cd erp_frontend 
+            git clone git@github.com:vedanshu-insonix/erp-react-frontend.git 
+	    
