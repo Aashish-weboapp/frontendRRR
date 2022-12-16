@@ -25,7 +25,7 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
 
-    - name: Build
+    - name: create
       run: |
         makedir erp_frontend
         cd erp_frontend
