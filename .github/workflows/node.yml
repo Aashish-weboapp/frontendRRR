@@ -27,5 +27,5 @@ jobs:
 
     - name: create
       run: |
-        makedir erp_frontend
-        cd erp_frontend
+        cd test
+        git clone git@github.com:vedanshu-insonix/erp-react-frontend.git
