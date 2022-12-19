@@ -26,5 +26,5 @@ jobs:
         
         script: |
            cd erp_frontend
-           npm install
            npm start
+           npm test
