@@ -28,4 +28,4 @@ jobs:
            cd erp_frontend
            cd erp-react-frontend
            npm install --force
-           npm start
+           npm run build
