@@ -29,4 +29,5 @@ jobs:
            cd erp-react-frontend
            git pull
            npm install --force
-           npm run build
+           serve -s build
+           
