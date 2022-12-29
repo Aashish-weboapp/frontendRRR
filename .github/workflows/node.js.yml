@@ -25,9 +25,15 @@ jobs:
         port: ${{ secrets.PORT }}
         
         script: |
-           cd erp_frontend
-           cd erp-react-frontend
-           git pull
-           npm install --force
-           npm start
+            cd erp_frontend/erp-react-frontend 
+            git pull
+            npm run build
+            cd
+            cp -R erp_frontend/erp-react-frontend/build/ frontend_deploy
+            systemctl stop nginx
+            systemctl service nginx reload
+            systemctl restart nginx
+            systemctl status nginx
+ 
+           
            
